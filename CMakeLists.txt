@@ -4,8 +4,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 project(DemoC11 LANGUAGES C)
 
-if(NOT MSVC OR CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL 19.27)
-  add_subdirectory(c11)
-endif()
+include(CheckCSourceCompiles)
+
+add_subdirectory(c11)
 
 add_subdirectory(c99)

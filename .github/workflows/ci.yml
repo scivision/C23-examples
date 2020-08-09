@@ -21,8 +21,20 @@ jobs:
 
     - run: cmake --build build
 
-    - run: ctest -V -C Release
-      working-directory: build
+  meson_gcc:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - run: pip install meson ninja
+
+    - run: meson build
+
+    - run: meson compile -C build
+
 
   cmake_gcc:
     runs-on: windows-latest
@@ -39,6 +51,3 @@ jobs:
         CC: gcc
 
     - run: cmake --build build
-
-    - run: ctest -V
-      working-directory: build
