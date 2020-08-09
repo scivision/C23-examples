@@ -1,0 +1,1 @@
+executable('generic', 'generic.c')
