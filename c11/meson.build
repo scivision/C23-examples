@@ -21,3 +21,8 @@ int main(void) { return 0; }
   executable('generic', 'generic.c')
 
 endif
+# --- variable length array
+if cc.compiles('int main(void){for (int i = 1; i < 5; i++){int a[i];} return 0;}', name: 'c11 vla')
+  vla = executable('vla', 'vla.c')
+  test('c11vla', vla, args: ['3'])
+endif
