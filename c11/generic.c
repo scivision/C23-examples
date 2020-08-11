@@ -8,9 +8,9 @@ void myfunction_float(float x){printf("call %s",__func__);}
 
 int main()
 {
-  long double ld;
-  double d;
-  float f;
+  long double ld=0;
+  double d=0;
+  float f=0;
   myfunction(ld);
   myfunction(d);
   myfunction(f);
