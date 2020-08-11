@@ -1,4 +1,4 @@
-name: ci_windows
+name: ci
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
       - "**.txt"
       - "**.cmake"
       - "**.c"
-      - ".github/workflows/ci_windows.yml"
+      - ".github/workflows/ci.yml"
 
 
 jobs:
 
-  cmake_msvc:
+  windows_cmake_msvc:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,7 +21,8 @@ jobs:
 
     - run: cmake --build build
 
-  meson_gcc:
+
+  windows_meson_gcc:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -31,12 +32,14 @@ jobs:
 
     - run: pip install meson ninja
 
-    - run: meson build
+    - run: meson setup build
 
     - run: meson compile -C build
 
+    - run: meson test -C build -v
 
-  cmake_gcc:
+
+  windows_cmake_gcc:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -51,3 +54,21 @@ jobs:
         CC: gcc
 
     - run: cmake --build build
+
+    - run: ctest -V
+      working-directory: build
+
+
+  linux_cmake_gcc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: cmake -B build
+      env:
+        CC: gcc
+
+    - run: cmake --build build
+
+    - run: ctest -V
+      working-directory: build
