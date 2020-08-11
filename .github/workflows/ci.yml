@@ -87,3 +87,18 @@ jobs:
 
     - run: ctest -V
       working-directory: build
+
+
+  mac_cmake_clang:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: cmake -B build
+      env:
+        CC: clang
+
+    - run: cmake --build build
+
+    - run: ctest -V
+      working-directory: build
