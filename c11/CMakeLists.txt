@@ -37,5 +37,5 @@ if(c11vla)
   target_compile_features(vla PRIVATE c_std_11)
   add_test(NAME VariableLengthArray COMMAND $<TARGET_FILE:vla> 3)
   set_tests_properties(VariableLengthArray PROPERTIES
-    PASS_REGULAR_EXPRESSION "^1 2 3 ")
+    PASS_REGULAR_EXPRESSION "^1 2 3[ \t\r\n]+$")
 endif()
