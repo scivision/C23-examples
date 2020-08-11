@@ -26,3 +26,8 @@ if cc.compiles('int main(void){for (int i = 1; i < 5; i++){int a[i];} return 0;}
   vla = executable('vla', 'vla.c')
   test('c11vla', vla, args: ['3'])
 endif
+# --- thread
+cc.compiles('''
+#include <threads.h>
+int main(void){ thrd_t tid; return 0; }
+''', name : 'c11 thread')

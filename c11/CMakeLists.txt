@@ -39,3 +39,6 @@ if(c11vla)
   set_tests_properties(VariableLengthArray PROPERTIES
     PASS_REGULAR_EXPRESSION "^1 2 3[ \t\r\n]+$")
 endif()
+# --- threading
+check_c_source_compiles("#include <threads.h>
+int main(void){ thrd_t tid; return 0; }" c11thread)

@@ -7,6 +7,9 @@ enable_testing()
 
 include(CheckCSourceCompiles)
 
+# this helps linters e.g. Visual Studio Intellicode work properly
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+
 add_subdirectory(c99)
 
 add_subdirectory(c11)
