@@ -10,6 +10,12 @@ include(CheckCSourceCompiles)
 # this helps linters e.g. Visual Studio Intellicode work properly
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
+if(MSVC)
+  string(APPEND CMAKE_C_FLAGS " /std:c11")
+else()
+  string(APPEND CMAKE_C_FLAGS " -std=c11")
+endif()
+
 add_subdirectory(c99)
 
 add_subdirectory(c11)
