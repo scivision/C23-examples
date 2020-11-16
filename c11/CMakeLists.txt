@@ -1,7 +1,4 @@
-if(MSVC AND CMAKE_VERSION VERSION_LESS 3.18.2)
-  message(STATUS "Visual Studio requires CMake >= 3.18.2 for C11")
-  return()
-endif()
+set(CMAKE_C_STANDARD 11)  # so that check_c_source_compiles works
 
 set(CMAKE_REQUIRED_FLAGS)
 # --- static assert

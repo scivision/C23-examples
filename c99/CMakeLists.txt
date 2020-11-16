@@ -1,3 +1,5 @@
+set(CMAKE_C_STANDARD 99)  # so that check_c_source_compiles works
+
 check_c_source_compiles("int main(void){ int* restrict a; return 0; }" c99restrict)
 
 if(c99restrict)
