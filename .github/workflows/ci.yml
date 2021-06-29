@@ -55,8 +55,7 @@ jobs:
 
     - run: cmake --build build
 
-    - run: ctest -V
-      working-directory: build
+    - run: ctest --test-dir build -V
 
 
   linux_cmake_gcc:
@@ -65,28 +64,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: cmake -B build
-      env:
-        CC: gcc
 
     - run: cmake --build build
 
-    - run: ctest -V
-      working-directory: build
-
-
-  linux_cmake_clang:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - run: cmake -B build
-      env:
-        CC: clang
-
-    - run: cmake --build build
-
-    - run: ctest -V
-      working-directory: build
+    - run: ctest --test-dir build -V
 
 
   mac_cmake_clang:
@@ -95,10 +76,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: cmake -B build
-      env:
-        CC: clang
 
     - run: cmake --build build
 
-    - run: ctest -V
-      working-directory: build
+    - run: ctest --test-dir build -V

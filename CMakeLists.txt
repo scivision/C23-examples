@@ -1,17 +1,11 @@
-cmake_minimum_required(VERSION 3.13)
-
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Debug or Release")
-endif()
+cmake_minimum_required(VERSION 3.19...3.21)
 
 project(DemoC11
-LANGUAGES C)
+  LANGUAGES C)
 
-include(CTest)
-include(CheckCSourceCompiles)
+enable_testing()
 
-# this helps linters e.g. Visual Studio Intellicode work properly
-set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+include(CheckSourceCompiles)
 
 add_subdirectory(c99)
 

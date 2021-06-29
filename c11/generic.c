@@ -14,4 +14,6 @@ int main()
   myfunction(ld);
   myfunction(d);
   myfunction(f);
+
+  return 0;
 }

@@ -4,13 +4,6 @@
 
 A few examples of C11 standard to check compilers and build systems.
 
-## Visual Studio
-
-If using Visual Studio, these requirements are needed:
-
-* CMake &ge; 3.18.2
-* Visual Studio &ge; 16.8
-
 ## Static assert
 
 [C11 static_assert](https://en.cppreference.com/w/c/language/_Static_assert)
