@@ -1,6 +1,5 @@
-set(CMAKE_C_STANDARD 11)  # so that check_Ssource_compiles works
+set_property(DIRECTORY PROPERTY LABELS C11)
 
-set(CMAKE_REQUIRED_FLAGS)
 # --- static assert
 check_source_compiles(C
 "#include <assert.h>

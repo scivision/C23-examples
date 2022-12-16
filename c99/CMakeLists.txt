@@ -1,4 +1,4 @@
-set(CMAKE_C_STANDARD 99)  # so that check_source_compiles works
+set_property(DIRECTORY PROPERTY LABELS C99)
 
 check_source_compiles(C
 "int main(void){ int* restrict a; return 0; }"

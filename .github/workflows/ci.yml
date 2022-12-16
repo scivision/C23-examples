@@ -3,80 +3,25 @@ name: ci
 on:
   push:
     paths:
-      - "**.build"
-      - "**.txt"
       - "**.cmake"
+      - "**/CMakeLists.txt"
       - "**.c"
       - ".github/workflows/ci.yml"
 
 
 jobs:
 
-  windows_cmake_msvc:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - run: cmake -B build
-
-    - run: cmake --build build
-
-
-  windows_meson_gcc:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - run: pip install meson ninja
-
-    - run: meson setup build
-
-    - run: meson compile -C build
-
-    - run: meson test -C build -v
-
-
-  windows_cmake_gcc:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - run: pip install ninja
-
-    - run: cmake -B build -G Ninja
-      env:
-        CC: gcc
-
-    - run: cmake --build build
-
-    - run: ctest --test-dir build -V
-
-
-  linux_cmake_gcc:
+  core:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        cc: [gcc, clang]
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - run: cmake -B build
-
-    - run: cmake --build build
-
-    - run: ctest --test-dir build -V
-
-
-  mac_cmake_clang:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - run: cmake -B build
-
-    - run: cmake --build build
-
-    - run: ctest --test-dir build -V
+    - run: cmake --workflow --preset default
+      env:
+        CC: ${{ matrix.cc }}
