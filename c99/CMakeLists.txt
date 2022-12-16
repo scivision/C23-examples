@@ -6,6 +6,7 @@ c99restrict)
 
 if(c99restrict)
   add_executable(restrict restrict.c)
+  add_test(NAME restrict COMMAND restrict)
 endif()
 
 
@@ -15,4 +16,5 @@ c99designated)
 
 if(c99designated)
   add_executable(designated designated.c)
+  add_test(NAME designated COMMAND designated)
 endif()
