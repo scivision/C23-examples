@@ -1,8 +1,14 @@
-# C11 standard Examples
+# C23, C11 standard Examples
 
 ![Actions Status](https://github.com/scivision/c11-examples/workflows/ci/badge.svg)
 
-A few examples of C11 standard to check compilers and build systems.
+A few examples of C23 and C11 standards to check compilers and build systems.
+
+[C++23 examples](https://github.com/scivision/Cpp23-examples)
+
+## nullptr
+
+The ambiguous NULL macro is often better replaced by nullptr when C23 is available.
 
 ## Static assert
 
