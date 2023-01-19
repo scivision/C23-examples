@@ -18,6 +18,10 @@ int main() { f(); }
 c23no_return
 )
 
+check_source_compiles(C "int main(void){ bool b = true; return 0; }"
+c23bool
+)
+
 if(c23nullptr)
   add_executable(nullptr nullptr.c)
 endif()
