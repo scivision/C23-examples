@@ -1,5 +1,9 @@
 set_property(DIRECTORY PROPERTY LABELS C23)
 
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+  set(CMAKE_REQUIRED_FLAGS "-Werror")
+endif()
+
 check_source_compiles(C
 "int main(void){ int i = nullptr; return 0; }"
 c23nullptr)
