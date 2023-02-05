@@ -1,7 +1,11 @@
 set_property(DIRECTORY PROPERTY LABELS C23)
 
-# --- C23 nullptr
+check_source_compiles(C
+"int main(void){ auto i = 0; return 0; }"
+HAVE_AUTO_TYPE
+)
 
+# --- C23 nullptr
 check_source_compiles(C
 "#include <stddef.h>
 int main(void){ int i = nullptr; return 0; }"
