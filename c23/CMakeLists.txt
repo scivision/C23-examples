@@ -3,10 +3,8 @@ set_property(DIRECTORY PROPERTY LABELS C23)
 # --- C23 nullptr
 
 check_source_compiles(C
-[=[
-#include <stddef.h>
-int main(void){ int i = nullptr; return 0; }
-]=]
+"#include <stddef.h>
+int main(void){ int i = nullptr; return 0; }"
 c23_nullptr)
 
 if(c23_nullptr)
@@ -14,14 +12,23 @@ if(c23_nullptr)
   add_test(NAME nullptr COMMAND nullptr)
 endif()
 
+# --- C23 maybe_unused
+check_source_compiles(C
+"[[ maybe_unused ]] void f(){ }
+int main(void) { return 0; }"
+c23_maybe_unused
+)
+if(c23_maybe_unused)
+  add_executable(maybe_unused maybe_unused.c)
+  add_test(NAME maybe_unused COMMAND maybe_unused)
+endif()
+
 # --- C23 noreturn
 
 check_source_compiles(C
-[=[
-#include <stdlib.h>
+"#include <stdlib.h>
 [[ noreturn ]] void f(){ exit(0); }
-int main(void) { f(); }
-]=]
+int main(void) { f(); }"
 c23_noreturn
 )
 
@@ -33,8 +40,7 @@ endif()
 # --- C23 fallthrough
 
 check_source_compiles(C
-[=[
-int main(void){
+"int main(void){
   switch (0) {
     case 1:
     case 2:
@@ -42,8 +48,7 @@ int main(void){
     case 3:
   }
   return 0;
-}
-]=]
+}"
 c23_fallthrough
 )
 if(c23_fallthrough)
@@ -53,14 +58,12 @@ endif()
 
 # --- unreachable
 check_source_compiles(C
-[=[
-#include <stddef.h>
-int main(void){ unreachable(); return 0; }
-]=]
+"#include <stddef.h>
+int main(void){ unreachable(); return 0; }"
 c23_unreachable
 )
 
-# we made a C11 fallback for some compilers
+#  C11 fallback for some compilers
 if(c23_unreachable OR CMAKE_C_COMPILER_ID MATCHES "Clang|GNU|Intel|MSVC")
   add_executable(unreachable unreachable.c)
   target_compile_definitions(unreachable PRIVATE
