@@ -1,31 +1,79 @@
 set_property(DIRECTORY PROPERTY LABELS C23)
 
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-  set(CMAKE_REQUIRED_FLAGS "-Werror")
-endif()
+# --- C23 nullptr
 
 check_source_compiles(C
-"int main(void){ int i = nullptr; return 0; }"
-c23nullptr)
+[=[
+#include <stddef.h>
+int main(void){ int i = nullptr; return 0; }
+]=]
+c23_nullptr)
+
+if(c23_nullptr)
+  add_executable(nullptr nullptr.c)
+  add_test(NAME nullptr COMMAND nullptr)
+endif()
+
+# --- C23 noreturn
 
 check_source_compiles(C
 [=[
 #include <stdlib.h>
-
 [[ noreturn ]] void f(){ exit(0); }
-int main() { f(); }
+int main(void) { f(); }
 ]=]
-c23no_return
+c23_noreturn
 )
 
+if(c23_noreturn)
+  add_executable(C23_noreturn noreturn.c)
+  add_test(NAME C23_noreturn COMMAND C23_noreturn)
+endif()
+
+# --- C23 fallthrough
+
+check_source_compiles(C
+[=[
+int main(void){
+  switch (0) {
+    case 1:
+    case 2:
+     [[fallthrough]];
+    case 3:
+  }
+  return 0;
+}
+]=]
+c23_fallthrough
+)
+if(c23_fallthrough)
+  add_executable(fallthrough fallthrough.c)
+  add_test(NAME fallthrough COMMAND fallthrough)
+endif()
+
+# --- unreachable
+check_source_compiles(C
+[=[
+#include <stddef.h>
+int main(void){ unreachable(); return 0; }
+]=]
+c23_unreachable
+)
+
+# we made a C11 fallback for some compilers
+if(c23_unreachable OR CMAKE_C_COMPILER_ID MATCHES "Clang|GNU|Intel|MSVC")
+  add_executable(unreachable unreachable.c)
+  target_compile_definitions(unreachable PRIVATE
+  $<$<BOOL:${c23_unreachable}>:c23_unreachable>
+  $<$<BOOL:${c23_fallthrough}>:c23_fallthrough>
+  )
+  add_test(NAME unreachable
+  COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
+  )
+  set_property(TEST unreachable PROPERTY WILL_FAIL TRUE)
+endif()
+
+# --- C23 bool
 check_source_compiles(C "int main(void){ bool b = true; return 0; }"
-c23bool
+c23_bool
 )
-
-if(c23nullptr)
-  add_executable(nullptr nullptr.c)
-endif()
-
-if(c23no_return)
-  add_executable(no_return no_return.c)
-endif()

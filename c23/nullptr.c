@@ -1,6 +1,7 @@
 // https://en.cppreference.com/w/c/language/nullptr
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 void g(int*)
@@ -36,4 +37,6 @@ int main(void)
     DETECT_NULL_POINTER_CONSTANT(0);
     DETECT_NULL_POINTER_CONSTANT(nullptr);
     DETECT_NULL_POINTER_CONSTANT(NULL); // implementation-defined
+
+    return EXIT_SUCCESS;
 }

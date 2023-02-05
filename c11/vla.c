@@ -13,6 +13,6 @@ for (int i = 1; i <= j; i++){
    printf("%zu ", sizeof a / sizeof *a);
 }
 
-return 0;
+return EXIT_SUCCESS;
 
 }
