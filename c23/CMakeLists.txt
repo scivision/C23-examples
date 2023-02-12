@@ -3,6 +3,9 @@ set_property(DIRECTORY PROPERTY LABELS C23)
 set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT2__=1)
 
 check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
+check_symbol_exists(unreachable "stddef.h" c23_unreachable)
+
+
 if(c23_alloc)
   # else false positive from non-POSIX following compilers
   check_symbol_exists(strndup "string.h" c23_strndup)
@@ -79,23 +82,14 @@ if(c23_fallthrough)
 endif()
 
 # --- unreachable
-check_source_compiles(C
-"#include <stddef.h>
-int main(void){ unreachable(); return 0; }"
-c23_unreachable
-)
 
-#  C11 fallback for some compilers
-if(c23_unreachable OR CMAKE_C_COMPILER_ID MATCHES "Clang|GNU|Intel|MSVC")
-  add_executable(unreachable unreachable.c)
-  target_compile_definitions(unreachable PRIVATE
-  $<$<BOOL:${c23_unreachable}>:c23_unreachable>
-  $<$<BOOL:${c23_fallthrough}>:c23_fallthrough>
+if(c23_unreachable)
+  add_executable(C23_unreachable unreachable.c)
+  target_compile_definitions(C23_unreachable PRIVATE $<$<BOOL:${c23_fallthrough}>:c23_fallthrough>)
+  add_test(NAME C23_unreachable
+  COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:C23_unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
   )
-  add_test(NAME unreachable
-  COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
-  )
-  set_property(TEST unreachable PROPERTY WILL_FAIL TRUE)
+  set_property(TEST C23_unreachable PROPERTY WILL_FAIL TRUE)
 endif()
 
 # --- C23 bool

@@ -1,22 +1,28 @@
-// https://en.cppreference.com/w/c/program/unreachable
+/* https://en.cppreference.com/w/c/program/unreachable */
 #include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 
+#if defined(__GNUC__) || defined(__clang__)
+#define unreachable() __builtin_unreachable()
+#elif defined(_MSC_VER)
+#define unreachable() __assume(0)
+#else
+#error "unreachable() is not implemented for this compiler"
+#endif
+
+
 struct Color { uint8_t r, g, b, a; };
 struct ColorSpan { struct Color* data; size_t size; };
 
-// Assume that only restricted set of texture caps is supported.
+/* Assume that only restricted set of texture caps is supported. */
 struct ColorSpan allocate_texture(size_t xy)
 {
     switch (xy)
     {
     case 128:
-#ifdef c23_fallthrough
-      [[fallthrough]];
-#endif
     case 512:
     {
         /* ... */
@@ -41,7 +47,7 @@ int main(void)
     free(tex.data);
     printf("OK: 128\n");
 
-    struct ColorSpan badtex = allocate_texture(32);  // Undefined behavior
+    struct ColorSpan badtex = allocate_texture(32);  /* Undefined behavior */
     free(badtex.data);
     fprintf(stderr, "Impossible: 32\n");
 
