@@ -5,10 +5,10 @@
 [strcpy_s](https://en.cppreference.com/w/c/string/byte/strcpy)
 is intended to overcome deficiencies in `strncpy` and non-standard `strlcpy`.
 
-## strncpy_s
+## snprintf_s
 
-[strncpy_s](https://en.cppreference.com/w/c/io/fprintf)
-is intended to overcome deficiencies in `strncpy`, but isn't yet widely available in common compilers.
+[snprintf_s](https://en.cppreference.com/w/c/io/fprintf)
+isn't yet widely available in common compilers.
 
 ## Static assert
 

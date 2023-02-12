@@ -1,25 +1,14 @@
 set_property(DIRECTORY PROPERTY LABELS C11)
 
-check_symbol_exists(__STDC_LIB_EXT1__ "" c11_lib_ext1)
+set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT1__=1)
 
-# --- constraint_handler_s
-check_source_compiles(C
-"
-#define __STDC_WANT_LIB_EXT1__ 1
-#include <stdlib.h>
-int main(void)
-{
-  set_constraint_handler_s(ignore_handler_s);
-  set_constraint_handler_s(abort_handler_s);
-  return EXIT_SUCCESS;
-}
-"
-c11_constraint_handler_s
-)
+check_symbol_exists(__STDC_LIB_EXT1__ "stdlib.h" c11_lib_ext1)
+check_symbol_exists(ignore_handler_s "stdlib.h" c11_ignore_handler_s)
+check_symbol_exists(constraint_handler_s "stdlib.h" c11_constraint_handler_s)
+check_symbol_exists(snprintf_s "stdio.h" c11_snprintf_s)
+check_symbol_exists(strcpy_s "string.h" c11_strcpy_s)
 
 # --- strcpy_s
-file(READ strcpy_s.c _src)
-check_source_compiles(C "${_src}" c11_strcpy_s)
 if(c11_strcpy_s)
   add_executable(strcpy_s strcpy_s.c)
   if(c11_constraint_handler_s OR NOT MSVC)
@@ -33,20 +22,6 @@ if(c11_strcpy_s)
   endif()
 endif()
 
-# --- strncpy_s
-check_source_compiles(C
-[=[
-#define __STDC_WANT_LIB_EXT1__ 1
-#include <stdio.h>
-
-int main(void){
-int sz = snprintf_s(NULL, 0, "%s", "hi");
-return 0;
-}
-]=]
-c11_snprintf_s
-)
-
 # --- static assert
 check_source_compiles(C
 [=[
@@ -56,8 +31,8 @@ int main(void) { static_assert(0==0, ""); return 0; }
 c11_static_assert
 )
 if(c11_static_assert)
-  add_executable(static_assert static_assert.c)
-  add_test(NAME static_assert COMMAND static_assert)
+  add_executable(C11_static_assert static_assert.c)
+  add_test(NAME C11_static_assert COMMAND C11_static_assert)
 endif()
 
 # --- Generic
