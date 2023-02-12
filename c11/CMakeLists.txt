@@ -1,5 +1,21 @@
 set_property(DIRECTORY PROPERTY LABELS C11)
 
+# --- strncpy_s
+# https://en.cppreference.com/w/c/io/fprintf
+check_symbol_exists(__STDC_LIB_EXT1__ "" c11_lib_ext1)
+check_source_compiles(C
+[=[
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+
+int main(void){
+int sz = snprintf_s(NULL, 0, "%s", "hi");
+return 0;
+}
+]=]
+c11_snprintf_s
+)
+
 # --- static assert
 check_source_compiles(C
 [=[
@@ -55,5 +71,4 @@ if(c11_thread_h)
   int main(void){ thrd_t tid; return 0; }"
   c11_thread
   )
-
 endif()
