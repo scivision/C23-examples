@@ -1,12 +1,17 @@
 # C23 examples
 
+## strdup
+
+ [strdup](https://en.cppreference.com/w/c/experimental/dynamic/strndup)
+ is present in all the current C compilers we trid.
+
 ## strndup
 
 Observed: [strndup](https://en.cppreference.com/w/c/experimental/dynamic/strndup) is present in:
 * Linux: GCC, Clang, oneAPI, NVIDIA HPC (nvc), AMD AOCC (clang)
 
 strndup is NOT present in:
-* Windows MinGW GCC 12.2, oneAPI 2023.0
+* Windows MinGW GCC 12.2, oneAPI 2023.0, MSVC
 
 ## nullptr
 

@@ -6,13 +6,13 @@
 #endif
 
 #include <string.h>
-#include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 
 int main(void)
 {
     const char *s1 = "String";
     char *s2 = strndup(s1, 2);
-    printf("%s\n", s2);
+    assert(strcmp(s2, "St") == 0);
     free(s2);
 }

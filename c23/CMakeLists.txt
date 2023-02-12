@@ -15,7 +15,16 @@ check_source_compiles(C "${_src}" c23_strndup)
 if(c23_strndup)
   add_executable(strndup strndup.c)
   add_test(NAME strndup COMMAND strndup)
-  set_property(TEST strndup PROPERTY PASS_REGULAR_EXPRESSION "^St\n$")
+endif()
+
+# --- strdup
+
+file(READ strdup.c _src)
+check_source_compiles(C "${_src}" c23_strdup)
+
+if(c23_strdup)
+  add_executable(strdup strdup.c)
+  add_test(NAME strdup COMMAND strdup)
 endif()
 
 # --- C23 nullptr
