@@ -6,6 +6,7 @@ enable_testing()
 
 include(CheckIncludeFile)
 include(CheckSourceCompiles)
+include(CheckSymbolExists)
 
 set(CMAKE_C_STANDARD 23)
 

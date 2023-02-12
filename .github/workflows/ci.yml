@@ -25,3 +25,11 @@ jobs:
     - run: cmake --workflow --preset default
       env:
         CC: ${{ matrix.cc }}
+
+  windows-msvc:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: cmake --workflow --preset debug

@@ -2,8 +2,21 @@ set_property(DIRECTORY PROPERTY LABELS C23)
 
 check_source_compiles(C
 "int main(void){ auto i = 0; return 0; }"
-HAVE_AUTO_TYPE
+c23_auto_type
 )
+
+# --- strndup
+# https://en.cppreference.com/w/c/experimental/dynamic
+check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
+
+file(READ strndup.c _src)
+check_source_compiles(C "${_src}" c23_strndup)
+
+if(c23_strndup)
+  add_executable(strndup strndup.c)
+  add_test(NAME strndup COMMAND strndup)
+  set_property(TEST strndup PROPERTY PASS_REGULAR_EXPRESSION "^St\n$")
+endif()
 
 # --- C23 nullptr
 check_source_compiles(C
