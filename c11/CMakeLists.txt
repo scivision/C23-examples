@@ -1,5 +1,7 @@
 set_property(DIRECTORY PROPERTY LABELS C11)
 
+message(STATUS "C11 configuration checks:")
+
 set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT1__=1)
 
 check_symbol_exists(__STDC_LIB_EXT1__ "stdlib.h" c11_lib_ext1)
@@ -7,6 +9,7 @@ check_symbol_exists(ignore_handler_s "stdlib.h" c11_ignore_handler_s)
 check_symbol_exists(constraint_handler_s "stdlib.h" c11_constraint_handler_s)
 check_symbol_exists(snprintf_s "stdio.h" c11_snprintf_s)
 check_symbol_exists(strcpy_s "string.h" c11_strcpy_s)
+check_symbol_exists(static_assert "assert.h" c11_static_assert)
 
 # --- strcpy_s
 if(c11_strcpy_s)
@@ -23,13 +26,6 @@ if(c11_strcpy_s)
 endif()
 
 # --- static assert
-check_source_compiles(C
-[=[
-#include <assert.h>
-int main(void) { static_assert(0==0, ""); return 0; }
-]=]
-c11_static_assert
-)
 if(c11_static_assert)
   add_executable(C11_static_assert static_assert.c)
   add_test(NAME C11_static_assert COMMAND C11_static_assert)

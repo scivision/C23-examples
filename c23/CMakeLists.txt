@@ -1,9 +1,12 @@
 set_property(DIRECTORY PROPERTY LABELS C23)
 
+message(STATUS "C23 configuration checks:")
+
 set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT2__=1)
 
 check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
+check_symbol_exists(static_assert "" c23_static_assert)
 
 
 if(c23_alloc)

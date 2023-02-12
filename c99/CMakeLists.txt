@@ -1,5 +1,6 @@
 set_property(DIRECTORY PROPERTY LABELS C99)
 
+message(STATUS "C99 configuration checks:")
 
 # can't do check_symbol_exists for built-in functions like __assume and __builtin_unreachable
 file(READ unreachable.c _src)

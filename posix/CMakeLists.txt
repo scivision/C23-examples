@@ -1,5 +1,7 @@
 set_property(DIRECTORY PROPERTY LABELS posix)
 
+message(STATUS "POSIX configuration checks:")
+
 set(CMAKE_REQUIRED_DEFINITIONS -D_POSIX_C_SOURCE=200809L)
 
 check_symbol_exists(strndup "string.h" posix_strndup)
