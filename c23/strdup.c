@@ -1,8 +1,8 @@
-#ifdef __STDC_ALLOC_LIB__
-#define __STDC_WANT_LIB_EXT2__ 1
-#else
-#define _POSIX_C_SOURCE 200809L
+#ifndef __STDC_ALLOC_LIB__
+#error "C23 compiler required"
 #endif
+
+#define __STDC_WANT_LIB_EXT2__ 1
 
 #include <string.h>
 #include <assert.h>

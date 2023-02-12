@@ -1,9 +1,9 @@
 // https://en.cppreference.com/w/c/experimental/dynamic/strndup
-#ifdef __STDC_ALLOC_LIB__
-#define __STDC_WANT_LIB_EXT2__ 1
-#else
+#ifndef __STDC_ALLOC_LIB__
 #error "C23 compiler required"
 #endif
+
+#define __STDC_WANT_LIB_EXT2__ 1
 
 #include <string.h>
 #include <assert.h>
