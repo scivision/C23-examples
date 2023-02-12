@@ -1,15 +1,35 @@
 set_property(DIRECTORY PROPERTY LABELS C11)
 
+check_symbol_exists(__STDC_LIB_EXT1__ "" c11_lib_ext1)
+
+# --- constraint_handler_s
+check_source_compiles(C
+"
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdlib.h>
+int main(void)
+{
+  set_constraint_handler_s(ignore_handler_s);
+  set_constraint_handler_s(abort_handler_s);
+  return EXIT_SUCCESS;
+}
+"
+c11_constraint_handler_s
+)
+
 # --- strcpy_s
 file(READ strcpy_s.c _src)
 check_source_compiles(C "${_src}" c11_strcpy_s)
 if(c11_strcpy_s)
   add_executable(strcpy_s strcpy_s.c)
   add_test(NAME strcpy_s COMMAND strcpy_s)
+  # MSVC error handler trips, but didn't yet support constraint_handler_s
+  set_property(TEST strcpy_s PROPERTY
+  WILL_FAIL $<AND:$<NOT:$<BOOL:${c11_constraint_handler_s}>>,$<BOOL:${MSVC}>>
+  )
 endif()
 
 # --- strncpy_s
-check_symbol_exists(__STDC_LIB_EXT1__ "" c11_lib_ext1)
 check_source_compiles(C
 [=[
 #define __STDC_WANT_LIB_EXT1__ 1

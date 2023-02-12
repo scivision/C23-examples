@@ -26,6 +26,7 @@ jobs:
       env:
         CC: ${{ matrix.cc }}
 
+
   mac:
     runs-on: macos-latest
     timeout-minutes: 5
@@ -41,8 +42,39 @@ jobs:
       env:
         CC: ${{ matrix.cc }}
 
+
+  windows-msys:
+    runs-on: windows-latest
+    needs: linux
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        shared: [false]
+        cpp: [true, false]
+      # github actions generally broken for shared lib, even when exe in cwd
+
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >-
+          mingw-w64-x86_64-ninja
+          mingw-w64-x86_64-gcc
+
+    - name: Put MSYS2_MinGW64 on PATH
+      run: echo "${{ runner.temp }}/msys64/mingw64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+    - uses: actions/checkout@v3
+
+    - run: cmake --workflow --preset default
+      env:
+        CMAKE_GENERATOR: Ninja
+
+
   windows-msvc:
     runs-on: windows-latest
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v3
