@@ -42,7 +42,7 @@ endif()
 
 # --- C23 maybe_unused
 check_source_compiles(C
-"[[ maybe_unused ]] void f(){ }
+"[[ maybe_unused ]] void f(){ [[ maybe_unused ]] int i; }
 int main(void) { return 0; }"
 c23_maybe_unused
 )
