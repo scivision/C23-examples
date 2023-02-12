@@ -1,7 +1,14 @@
 set_property(DIRECTORY PROPERTY LABELS C11)
 
+# --- strcpy_s
+file(READ strcpy_s.c _src)
+check_source_compiles(C "${_src}" c11_strcpy_s)
+if(c11_strcpy_s)
+  add_executable(strcpy_s strcpy_s.c)
+  add_test(NAME strcpy_s COMMAND strcpy_s)
+endif()
+
 # --- strncpy_s
-# https://en.cppreference.com/w/c/io/fprintf
 check_symbol_exists(__STDC_LIB_EXT1__ "" c11_lib_ext1)
 check_source_compiles(C
 [=[
@@ -26,7 +33,7 @@ c11_static_assert
 )
 if(c11_static_assert)
   add_executable(static_assert static_assert.c)
-  add_test(NAME StaticAssert COMMAND static_assert)
+  add_test(NAME static_assert COMMAND static_assert)
 endif()
 
 # --- Generic
@@ -35,7 +42,7 @@ check_source_compiles(C "${_src}" c11_generic)
 
 if(c11_generic)
   add_executable(generic generic.c)
-  add_test(NAME Generic COMMAND generic)
+  add_test(NAME generic COMMAND generic)
 endif()
 
 # --- C11 noreturn
@@ -43,7 +50,7 @@ check_source_compiles(C
 "#include <stdlib.h>
 #include <stdnoreturn.h>
 noreturn void f(){ exit(0); }
-int main(void) { f(); }"
+int main(void) { f(); return EXIT_FAILURE; }"
 c11_noreturn
 )
 

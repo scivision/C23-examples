@@ -54,7 +54,7 @@ endif()
 check_source_compiles(C
 "#include <stdlib.h>
 [[ noreturn ]] void f(){ exit(0); }
-int main(void) { f(); }"
+int main(void) { f(); return EXIT_FAILURE; }"
 c23_noreturn
 )
 

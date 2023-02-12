@@ -15,4 +15,6 @@ int main(void)
     char *s2 = strndup(s1, 2);
     assert(strcmp(s2, "St") == 0);
     free(s2);
+
+    return EXIT_SUCCESS;
 }
