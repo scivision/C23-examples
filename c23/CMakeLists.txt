@@ -1,5 +1,11 @@
 set_property(DIRECTORY PROPERTY LABELS C23)
 
+set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT2__=1)
+
+check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
+check_symbol_exists(strndup "string.h" c23_strndup)
+
+
 check_source_compiles(C
 "int main(void){ auto i = 0; return 0; }"
 c23_auto_type
@@ -7,14 +13,10 @@ c23_auto_type
 
 # --- strndup
 # https://en.cppreference.com/w/c/experimental/dynamic
-check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
-
-file(READ strndup.c _src)
-check_source_compiles(C "${_src}" c23_strndup)
 
 if(c23_strndup)
-  add_executable(strndup strndup.c)
-  add_test(NAME strndup COMMAND strndup)
+  add_executable(C23_strndup strndup.c)
+  add_test(NAME C23_strndup COMMAND C23_strndup)
 endif()
 
 # --- strdup

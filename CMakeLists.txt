@@ -17,12 +17,9 @@ endif()
 
 # --- examples
 
-add_subdirectory(c99)
-
-add_subdirectory(c11)
-
-add_subdirectory(c23)
-
+foreach(s IN ITEMS c99 c11 c23 posix)
+  add_subdirectory(${s})
+endforeach()
 # --- auto-ignore build directory
 if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
   file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
