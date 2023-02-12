@@ -11,13 +11,28 @@ on:
 
 jobs:
 
-  core:
+  linux:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
     strategy:
       matrix:
-        cc: [gcc, clang]
+        cc: [gcc-9, gcc-10, gcc-11, gcc-12, clang-12, clang-13, clang-14]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: cmake --workflow --preset default
+      env:
+        CC: ${{ matrix.cc }}
+
+  mac:
+    runs-on: macos-latest
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        cc: [gcc-12, clang]
 
     steps:
     - uses: actions/checkout@v3
