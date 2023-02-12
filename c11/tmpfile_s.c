@@ -9,6 +9,8 @@ int main(void)
 
     FILE* tmpf;
     errno_t r = tmpfile_s(&tmpf);
+    fclose(tmpf);
+
     if (r != 0) {
       fprintf(stderr,"tmpfile_s() failed: %d\n", r);
       return EXIT_FAILURE;

@@ -10,6 +10,7 @@ check_symbol_exists(constraint_handler_s "stdlib.h" c11_constraint_handler_s)
 check_symbol_exists(snprintf_s "stdio.h" c11_snprintf_s)
 check_symbol_exists(strcpy_s "string.h" c11_strcpy_s)
 check_symbol_exists(static_assert "assert.h" c11_static_assert)
+check_symbol_exists(getenv_s "stdlib.h" c11_getenv_s)
 check_symbol_exists(tmpnam_s "stdio.h" c11_tmpnam_s)
 check_symbol_exists(tmpfile_s "stdio.h" c11_tmpfile_s)
 
@@ -27,32 +28,10 @@ if(c11_strcpy_s)
   endif()
 endif()
 
-# --- static assert
-if(c11_static_assert)
-  add_executable(C11_static_assert static_assert.c)
-  add_test(NAME C11_static_assert COMMAND C11_static_assert)
-endif()
-
-# --- tmpnam_s
-if(c11_tmpnam_s)
-  add_executable(tmpnam_s tmpnam_s.c)
-  add_test(NAME tmpnam_s COMMAND tmpnam_s)
-endif()
-
-# --- tmpfile_s
-if(c11_tmpfile_s)
-  add_executable(tmpfile_s tmpfile_s.c)
-  add_test(NAME tmpfile_s COMMAND tmpfile_s)
-endif()
-
 # --- Generic
 file(READ generic.c _src)
 check_source_compiles(C "${_src}" c11_generic)
 
-if(c11_generic)
-  add_executable(generic generic.c)
-  add_test(NAME generic COMMAND generic)
-endif()
 
 # --- C11 noreturn
 check_source_compiles(C
@@ -63,10 +42,13 @@ int main(void) { f(); return EXIT_FAILURE; }"
 c11_noreturn
 )
 
-if(c11_noreturn)
-  add_executable(C11_noreturn noreturn.c)
-  add_test(NAME C11_noreturn COMMAND C11_noreturn)
-endif()
+foreach(t IN ITEMS generic getenv_s noreturn static_assert tmpnam_s tmpfile_s)
+  if(c11_${t})
+    add_executable(C11_${t} ${t}.c)
+    add_test(NAME C11_${t} COMMAND C11_${t})
+  endif()
+endforeach()
+
 
 # --- variable length array
 check_source_compiles(C
