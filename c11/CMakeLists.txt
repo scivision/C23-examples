@@ -10,6 +10,7 @@ check_symbol_exists(constraint_handler_s "stdlib.h" c11_constraint_handler_s)
 check_symbol_exists(snprintf_s "stdio.h" c11_snprintf_s)
 check_symbol_exists(strcpy_s "string.h" c11_strcpy_s)
 check_symbol_exists(static_assert "assert.h" c11_static_assert)
+check_symbol_exists(tmpnam_s "stdio.h" c11_tmpnam_s)
 
 # --- strcpy_s
 if(c11_strcpy_s)
@@ -29,6 +30,12 @@ endif()
 if(c11_static_assert)
   add_executable(C11_static_assert static_assert.c)
   add_test(NAME C11_static_assert COMMAND C11_static_assert)
+endif()
+
+# --- tmpnam_s
+if(c11_tmpnam_s)
+  add_executable(tmpnam_s tmpnam_s.c)
+  add_test(NAME tmpnam_s COMMAND tmpnam_s)
 endif()
 
 # --- Generic
