@@ -48,12 +48,6 @@ jobs:
     needs: linux
     timeout-minutes: 10
 
-    strategy:
-      matrix:
-        shared: [false]
-        cpp: [true, false]
-      # github actions generally broken for shared lib, even when exe in cwd
-
     steps:
     - uses: msys2/setup-msys2@v2
       with:

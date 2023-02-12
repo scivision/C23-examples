@@ -22,11 +22,15 @@ file(READ strcpy_s.c _src)
 check_source_compiles(C "${_src}" c11_strcpy_s)
 if(c11_strcpy_s)
   add_executable(strcpy_s strcpy_s.c)
-  add_test(NAME strcpy_s COMMAND strcpy_s)
+  if(c11_constraint_handler_s OR NOT MSVC)
+    add_test(NAME strcpy_s COMMAND strcpy_s)
+  else()
   # MSVC error handler trips, but didn't yet support constraint_handler_s
-  set_property(TEST strcpy_s PROPERTY
-  WILL_FAIL $<AND:$<NOT:$<BOOL:${c11_constraint_handler_s}>>,$<BOOL:${MSVC}>>
-  )
+    add_test(NAME strcpy_s
+    COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:strcpy_s> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
+    )
+    set_property(TEST strcpy_s PROPERTY WILL_FAIL TRUE)
+  endif()
 endif()
 
 # --- strncpy_s
