@@ -1,5 +1,10 @@
 # C11 examples
 
+## tmpnam_s
+
+Note that the temporary file name does not necessarily include the full path to the temporary directory.
+I.e. it may be just a plain file name or a full path depending on computing platform.
+
 ## strcpy_s
 
 [strcpy_s](https://en.cppreference.com/w/c/string/byte/strcpy)

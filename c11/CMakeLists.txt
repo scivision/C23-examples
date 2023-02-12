@@ -11,6 +11,7 @@ check_symbol_exists(snprintf_s "stdio.h" c11_snprintf_s)
 check_symbol_exists(strcpy_s "string.h" c11_strcpy_s)
 check_symbol_exists(static_assert "assert.h" c11_static_assert)
 check_symbol_exists(tmpnam_s "stdio.h" c11_tmpnam_s)
+check_symbol_exists(tmpfile_s "stdio.h" c11_tmpfile_s)
 
 # --- strcpy_s
 if(c11_strcpy_s)
@@ -36,6 +37,12 @@ endif()
 if(c11_tmpnam_s)
   add_executable(tmpnam_s tmpnam_s.c)
   add_test(NAME tmpnam_s COMMAND tmpnam_s)
+endif()
+
+# --- tmpfile_s
+if(c11_tmpfile_s)
+  add_executable(tmpfile_s tmpfile_s.c)
+  add_test(NAME tmpfile_s COMMAND tmpfile_s)
 endif()
 
 # --- Generic

@@ -1,7 +1,6 @@
 #define __STDC_WANT_LIB_EXT1__ 1
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 int main(void)
@@ -15,4 +14,6 @@ int main(void)
     }
 
     printf("temporary file name: %s\n", name);
+
+    return EXIT_SUCCESS;
 }
