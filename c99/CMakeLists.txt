@@ -2,6 +2,13 @@ set_property(DIRECTORY PROPERTY LABELS C99)
 
 message(STATUS "C99 configuration checks:")
 
+set(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
+
+check_symbol_exists(secure_getenv "stdlib.h" HAVE_SECURE_GETENV)
+
+add_executable(getenv getenv.c)
+add_test(NAME getenv COMMAND getenv)
+
 # can't do check_symbol_exists for built-in functions like __assume and __builtin_unreachable
 file(READ unreachable.c _src)
 check_source_compiles(C "${_src}" builtin_unreachable)
