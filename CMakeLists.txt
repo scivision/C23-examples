@@ -10,7 +10,9 @@ include(CheckSymbolExists)
 
 set(CMAKE_C_STANDARD 23)
 
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+if(MSVC)
+  list(APPEND CMAKE_REQUIRED_FLAGS /WX)
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|^Intel")
   list(APPEND CMAKE_REQUIRED_FLAGS -Werror)
   # makes unsupported attributes checks error.
 endif()
