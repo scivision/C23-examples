@@ -38,6 +38,17 @@ c23_fallthrough
 )
 
 check_source_compiles(C
+"
+#ifdef N
+#elifdef M
+#elifndef Y
+#endif
+int main(void) { return 0; }
+"
+c23_elifdef
+)
+
+check_source_compiles(C
 "#include <stdlib.h>
 [[ noreturn ]] void f(){ exit(0); }
 int main(void) { f(); return EXIT_FAILURE; }"
