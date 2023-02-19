@@ -1,4 +1,5 @@
 // https://en.cppreference.com/w/c/language/restrict
+#include <stdlib.h>
 
 float x[100];
 float *c;
@@ -16,4 +17,4 @@ void g3(void) {
            f( 99,   e,  d+1); // OK
 }
 
-int main(void){ return 0; }
+int main(void){ return EXIT_SUCCESS; }
