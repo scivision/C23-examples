@@ -19,7 +19,7 @@ endif()
 
 # --- examples
 
-foreach(s IN ITEMS c99 c11 c23 posix)
+foreach(s IN ITEMS c99 c11 c11_annex_k c23 posix)
   add_subdirectory(${s})
 endforeach()
 # --- auto-ignore build directory
