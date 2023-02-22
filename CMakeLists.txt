@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19...3.26)
 
-project(DemoC23 LANGUAGES C)
+project(C23examples LANGUAGES C)
 
 enable_testing()
 
@@ -22,7 +22,5 @@ endif()
 foreach(s IN ITEMS c99 c11 c11_annex_k c23 posix)
   add_subdirectory(${s})
 endforeach()
-# --- auto-ignore build directory
-if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
-  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
-endif()
+
+file(GENERATE OUTPUT .gitignore CONTENT "*")
