@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.19...3.26)
+cmake_minimum_required(VERSION 3.21...3.26)
+# CMake 3.21 required for C23 support.
 
 project(C23examples LANGUAGES C)
 
@@ -11,9 +12,9 @@ include(CheckSymbolExists)
 set(CMAKE_C_STANDARD 23)
 
 if(MSVC)
-  list(APPEND CMAKE_REQUIRED_FLAGS /WX)
+  set(CMAKE_REQUIRED_FLAGS "/WX")
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|^Intel")
-  list(APPEND CMAKE_REQUIRED_FLAGS -Werror)
+  set(CMAKE_REQUIRED_FLAGS "-Werror")
   # makes unsupported attributes checks error.
 endif()
 
