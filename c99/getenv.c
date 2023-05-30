@@ -16,8 +16,6 @@ int main(void)
   _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
 #endif
 
-  size_t MAXP = 32768;
-  size_t L;
   char* name = "PATH";
 
   char* buf;

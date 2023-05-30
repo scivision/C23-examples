@@ -1,6 +1,6 @@
 set_property(DIRECTORY PROPERTY LABELS C11_Annex_K)
 
-message("C11 Annex K functions are not generally available, except for MSVC-like compilers.")
+message(NOTICE "C11 Annex K functions are not generally available, except for MSVC-like compilers.")
 
 set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT1__=1)
 

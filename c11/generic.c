@@ -3,9 +3,9 @@
 #include <stdlib.h>
 
 #define myfunction(X) _Generic((X), long double:myfunction_longdouble, default:myfunction_double, float:myfunction_float)(X)
-void myfunction_longdouble(long double x){printf("call %s",__func__);}
-void myfunction_double(double x){printf("call %s",__func__);}
-void myfunction_float(float x){printf("call %s",__func__);}
+void myfunction_longdouble(long double x){printf("call %s(%Lf)", __func__, x);}
+void myfunction_double(double x){printf("call %s %f", __func__, x);}
+void myfunction_float(float x){printf("call %s %f", __func__, x);}
 
 int main(void)
 {
