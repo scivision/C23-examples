@@ -21,7 +21,7 @@ int main(void) { f(); return EXIT_FAILURE; }"
 c11_noreturn
 )
 
-foreach(t IN ITEMS generic getenv_s noreturn static_assert tmpnam_s tmpfile_s)
+foreach(t IN ITEMS generic noreturn static_assert)
   if(c11_${t})
     add_executable(C11_${t} ${t}.c)
     add_test(NAME C11_${t} COMMAND C11_${t})
