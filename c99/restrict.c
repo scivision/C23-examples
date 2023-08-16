@@ -9,7 +9,7 @@ void f(int n, float * restrict a, float * const b) {
        a[i] = b[i] + c[i];
 }
 void g3(void) {
-    float d[100], e[100];
+    float d[100], e[100]={0};
     c = x; f(100,   d,    e); // OK
            f( 50,   d, d+50); // OK
            f( 99, d+1,    d); // undefined behavior

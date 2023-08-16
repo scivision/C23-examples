@@ -12,11 +12,10 @@ int main(void)
 
   char* buf = (char*) malloc(MAXP);
 
-  errno_t r = getenv_s(&L, buf, MAXP, name);
-
-  if(r != 0){
+  if(getenv_s(&L, buf, MAXP, name)){
     free(buf);
     fprintf(stderr, "ERROR:getenv\n");
+    return EXIT_FAILURE;
   }
 
   printf("%s: %s\n", name, buf);

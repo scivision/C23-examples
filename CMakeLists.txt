@@ -11,12 +11,22 @@ include(CheckSymbolExists)
 
 set(CMAKE_C_STANDARD 23)
 
+option(cppcheck "Run cppcheck")
+
 if(MSVC)
   set(CMAKE_REQUIRED_FLAGS "/WX")
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|^Intel")
   set(CMAKE_REQUIRED_FLAGS "-Werror")
   add_compile_options(-Wall -Wextra)
   # makes unsupported attributes checks error.
+endif()
+
+# CPPcheck
+if(cppcheck)
+  find_program(cppcheck_exe NAMES cppcheck REQUIRED)
+  set(cppcheck_opts --enable=all --inline-suppr --quiet --suppressions-list=${PROJECT_SOURCE_DIR}/cppcheck.supp)
+  set(CMAKE_C_CPPCHECK ${cppcheck_exe} --std=c11 ${cppcheck_opts})
+  set(CMAKE_CXX_CPPCHECK ${cppcheck_exe} --std=c++20 ${cppcheck_opts})
 endif()
 
 # --- examples
