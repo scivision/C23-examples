@@ -5,6 +5,8 @@ message(STATUS "C23 configuration checks:")
 set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT2__=1)
 
 check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
+# https://en.cppreference.com/w/c/experimental/dynamic
+
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
 check_symbol_exists(static_assert "" c23_static_assert)
 
@@ -67,10 +69,15 @@ int main(void) { return 0; }"
 c23_maybe_unused
 )
 
-foreach(t IN ITEMS fallthrough maybe_unused noreturn nullptr strdup strndup)
+set(c23_limits true)
+# just for foreach() pattern
+
+foreach(t IN ITEMS fallthrough limits maybe_unused noreturn nullptr strdup strndup)
   if(c23_${t})
     add_executable(C23_${t} ${t}.c)
     add_test(NAME C23_${t} COMMAND C23_${t})
+  else()
+    message(STATUS "C23_${t} not available")
   endif()
 endforeach()
 
