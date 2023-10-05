@@ -17,10 +17,10 @@ jobs:
 
     strategy:
       matrix:
-        cc: [gcc-9, gcc-10, gcc-11, gcc-12, clang-12, clang-13, clang-14]
+        cc: [gcc-9, gcc-10, gcc-11, gcc-12, clang-13, clang-14]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: cmake --workflow --preset default
       env:
@@ -36,7 +36,7 @@ jobs:
         cc: [gcc-12, clang]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: cmake --workflow --preset default
       env:
@@ -59,7 +59,7 @@ jobs:
     - name: Put MSYS2_MinGW64 on PATH
       run: echo "${{ runner.temp }}/msys64/mingw64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: cmake --workflow --preset default
       env:
@@ -71,6 +71,6 @@ jobs:
     timeout-minutes: 10
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: cmake --workflow --preset debug
