@@ -7,7 +7,7 @@ set(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
 check_symbol_exists(secure_getenv "stdlib.h" HAVE_SECURE_GETENV)
 
 add_executable(getenv getenv.c)
-target_compile_definitions(getenv PRIVATE $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>)
+target_compile_definitions(getenv PRIVATE $<$<BOOL:${WIN32}>:_CRT_SECURE_NO_WARNINGS>)
 add_test(NAME getenv COMMAND getenv)
 
 # can't do check_symbol_exists for built-in functions like __assume and __builtin_unreachable
