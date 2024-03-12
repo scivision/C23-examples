@@ -28,7 +28,8 @@ jobs:
 
 
   mac:
-    runs-on: macos-latest
+    runs-on: macos-14
+    # macos-14 is Apple Silicon
     timeout-minutes: 5
 
     strategy:
