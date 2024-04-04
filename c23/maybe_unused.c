@@ -1,11 +1,20 @@
 // https://en.cppreference.com/w/c/language/attributes/maybe_unused
+
+#if !__has_c_attribute(maybe_unused)
+#error "no maybe_unused attribute"
+#endif
+
+#ifndef bool
+// GCC < 13, Clang < 15
+#include <stdbool.h>
+#endif
+
 #include <assert.h>
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 
-[[maybe_unused]] void f([[maybe_unused]] _Bool cond1, [[maybe_unused]] _Bool cond2)
+[[maybe_unused]] void f([[maybe_unused]] bool cond1, [[maybe_unused]] bool cond2)
 {
    [[maybe_unused]] bool b = cond1 && cond2;
    assert(b);

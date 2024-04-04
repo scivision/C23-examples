@@ -1,3 +1,7 @@
+#if !__has_c_attribute(fallthrough)
+#error "no fallthrough attribute"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 

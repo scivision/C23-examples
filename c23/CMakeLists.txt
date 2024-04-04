@@ -9,7 +9,7 @@ check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
 
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
 check_symbol_exists(static_assert "" c23_static_assert)
-
+check_symbol_exists(__has_c_attribute "" c23_has_c_attribute)
 
 if(c23_alloc)
   # else false positive from non-POSIX following compilers
@@ -22,26 +22,21 @@ check_source_compiles(C
 c23_auto_type
 )
 
-check_source_compiles(C "int main(void){ bool b = true; return 0; }"
+check_source_compiles(C
+"int main(void){ bool b = true; return 0; }"
 c23_bool
 )
 
 check_source_compiles(C
-"int main(void){
-  switch (0) {
-    case 1:
-    case 2:
-     [[fallthrough]];
-    case 3:
-  }
-  return 0;
-}"
+"#if !__has_c_attribute(fallthrough)
+#error \"no fallthrough attribute\"
+#endif
+int main(){ return 0; }"
 c23_fallthrough
 )
 
 check_source_compiles(C
-"
-#ifdef N
+"#ifdef N
 #elifdef M
 #elifndef Y
 #endif
@@ -51,9 +46,10 @@ c23_elifdef
 )
 
 check_source_compiles(C
-"#include <stdlib.h>
-[[ noreturn ]] void f(){ exit(0); }
-int main(void) { f(); return EXIT_FAILURE; }"
+"#if !__has_c_attribute(noreturn)
+#error \"no noreturn attribute\"
+#endif
+int main(){ return 0; }"
 c23_noreturn
 )
 
@@ -64,8 +60,10 @@ c23_nullptr
 )
 
 check_source_compiles(C
-"[[ maybe_unused ]] void f(){ [[ maybe_unused ]] int i; }
-int main(void) { return 0; }"
+"#if !__has_c_attribute(maybe_unused)
+#error \"no maybe_unused attribute\"
+#endif
+int main(){ return 0; }"
 c23_maybe_unused
 )
 
