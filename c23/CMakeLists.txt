@@ -10,7 +10,7 @@ check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
 check_symbol_exists(static_assert "" c23_static_assert)
 
-
+check_symbol_exists(__has_include "" c23_has_include)
 check_symbol_exists(__has_c_attribute "" c23_has_c_attribute)
 
 if(c23_alloc)
