@@ -14,7 +14,7 @@ struct ColorSpan allocate_texture(size_t xy)
     switch (xy)
     {
     case 128:
-#ifdef c23_fallthrough
+#if __has_c_attribute(c23_fallthrough)
       [[fallthrough]];
 #endif
     case 512:

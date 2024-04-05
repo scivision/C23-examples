@@ -9,6 +9,8 @@ check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
 
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
 check_symbol_exists(static_assert "" c23_static_assert)
+
+
 check_symbol_exists(__has_c_attribute "" c23_has_c_attribute)
 
 if(c23_alloc)
@@ -22,6 +24,7 @@ check_source_compiles(C
 c23_auto_type
 )
 
+# for auto and bool, check_symbol_exists() is not appropriate as they're not symbols in C23che
 check_source_compiles(C
 "int main(void){ bool b = true; return 0; }"
 c23_bool
@@ -82,7 +85,7 @@ endforeach()
 
 if(c23_unreachable)
   add_executable(C23_unreachable unreachable.c)
-  target_compile_definitions(C23_unreachable PRIVATE $<$<BOOL:${c23_fallthrough}>:c23_fallthrough>)
+
   add_test(NAME C23_unreachable
   COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:C23_unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
   )
