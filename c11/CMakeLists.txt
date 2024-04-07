@@ -13,6 +13,8 @@ check_source_compiles(C "${_src}" c11_generic)
 
 
 # --- C11 noreturn
+# deprecated by [[noreturn]] in C23
+# https://en.cppreference.com/w/c/language/_Noreturn
 check_source_compiles(C
 "#include <stdlib.h>
 #include <stdnoreturn.h>

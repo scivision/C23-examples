@@ -16,10 +16,9 @@ int main(void)
   _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
 #endif
 
-  char* name = "PATH";
+  const char* name = "PATH";
 
-  char* buf;
-  buf = getenv(name);
+  const char* buf = getenv(name);
   if(!buf){
     fprintf(stderr, "ERROR:getenv\n");
     return EXIT_FAILURE;

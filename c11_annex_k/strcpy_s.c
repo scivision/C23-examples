@@ -20,7 +20,7 @@ int main(void)
   _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
 #endif
 
-    char *src = "Take the test.";
+    const char *src = "Take the test.";
 //  src[0] = 'M' ; // this would be undefined behavior
     char dst[14 + 1]; // +1 to accomodate for the null terminator
 

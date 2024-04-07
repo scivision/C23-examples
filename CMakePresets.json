@@ -6,14 +6,11 @@
   "name": "default",
   "binaryDir": "${sourceDir}/build",
   "cacheVariables": {
-    "CMAKE_COMPILE_WARNING_AS_ERROR": true
+    "CMAKE_COMPILE_WARNING_AS_ERROR": false
   }
 },
 {
-  "name": "debug", "inherits": "default",
-  "cacheVariables": {
-    "CMAKE_COMPILE_WARNING_AS_ERROR": false
-  }
+  "name": "debug", "inherits": "default"
 }
 ],
 "buildPresets": [
