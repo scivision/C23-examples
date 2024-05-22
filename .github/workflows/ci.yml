@@ -12,16 +12,34 @@ env:
   CMAKE_BUILD_PARALLEL_LEVEL: 4
   CTEST_PARALLEL_LEVEL: 0
   CTEST_NO_TESTS_ACTION: error
+  HOMEBREW_NO_AUTO_UPDATE: 1
+
 
 jobs:
 
-  linux:
-    runs-on: ubuntu-latest
+  linux-new:
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     strategy:
       matrix:
-        cc: [gcc-9, gcc-10, gcc-11, gcc-12, gcc-13, clang-13, clang-14, clang-15]
+        cc: [gcc-12, gcc-13, gcc-14, clang-18]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - run: cmake --workflow --preset default
+      env:
+        CC: ${{ matrix.cc }}
+
+
+  linux-old:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        cc: [gcc-9, gcc-10, gcc-11]
 
     steps:
     - uses: actions/checkout@v4
@@ -33,7 +51,6 @@ jobs:
 
   mac:
     runs-on: macos-14
-    # macos-14 is Apple Silicon
     timeout-minutes: 5
 
     strategy:
@@ -50,7 +67,6 @@ jobs:
 
   windows-msys:
     runs-on: windows-latest
-    needs: linux
     timeout-minutes: 10
 
     env:
