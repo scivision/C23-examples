@@ -55,14 +55,12 @@ jobs:
 
     strategy:
       matrix:
-        cc: [gcc-14, clang]
+        cc: [clang]
+
+  # gcc-13 broken in general on GHA
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: install latest GCC
-      if: matrix.cc == 'gcc-14'
-      run: brew install gcc
 
     - run: cmake --workflow --preset default
       env:
