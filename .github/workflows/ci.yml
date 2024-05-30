@@ -50,15 +50,19 @@ jobs:
 
 
   mac:
-    runs-on: macos-14
+    runs-on: macos-latest
     timeout-minutes: 5
 
     strategy:
       matrix:
-        cc: [gcc-13, clang]
+        cc: [gcc-14, clang]
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: install latest GCC
+      if: matrix.cc == 'gcc-14'
+      run: brew install gcc
 
     - run: cmake --workflow --preset default
       env:
