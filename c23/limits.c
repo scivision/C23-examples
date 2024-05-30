@@ -5,6 +5,11 @@
 
 int main(void)
 {
+
+    printf("Storage sizes in bytes:\n");
+
+    printf("BOOL_WIDTH     = %d\n", BOOL_WIDTH);
+
     printf("CHAR_BIT       = %d\n", CHAR_BIT);
     printf("MB_LEN_MAX     = %d\n\n", MB_LEN_MAX);
 

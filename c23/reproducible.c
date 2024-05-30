@@ -7,14 +7,10 @@
 #endif
 #ifndef REPROD
 #if defined(__GNUC__) || defined(__clang__)
-#ifdef HAVE_WARNING
 #warning "substituting attribute pure for reproducible"
-#endif
 #define REPROD __attribute__ ((pure))
 #else
-#ifdef HAVE_WARNING
 #warning "reproducible attribute not supported"
-#endif
 #define REPROD
 #endif
 #endif

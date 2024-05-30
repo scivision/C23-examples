@@ -6,9 +6,7 @@
 #ifdef HAVE_CONSTEXPR
 #define CONSTEXPR constexpr
 #else
-#ifdef HAVE_WARNING
 #warning "constexpr is not supported"
-#endif
 #define CONSTEXPR
 #endif
 

@@ -7,14 +7,10 @@
 #endif
 #ifndef UNSEQ
 #if defined(__GNUC__) || defined(__clang__)
-#ifdef HAVE_WARNING
 #warning "substituting attribute const for unsequenced"
-#endif
 #define UNSEQ __attribute__ ((const))
 #else
-#ifdef HAVE_WARNING
 #warning "unsequenced attribute not supported"
-#endif
 #define UNSEQ
 #endif
 #endif

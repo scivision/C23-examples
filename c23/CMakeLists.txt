@@ -22,6 +22,8 @@ if(c23_alloc)
   check_symbol_exists(strdup "string.h" c23_strdup)
 endif()
 
+check_symbol_exists(BOOL_WIDTH "limits.h" c23_limits)
+
 check_source_compiles(C
 "int main(void){ auto i = 0; return 0; }"
 c23_auto_type
@@ -33,13 +35,11 @@ check_source_compiles(C
 c23_bool
 )
 
-# https://en.cppreference.com/w/c/language/constexpr
+# MSVC 19.39 didn't yet have #warning
 check_source_compiles(C
-"int main(void){
-  constexpr int i = 0;
-  return i;
-}"
-c23_constexpr
+"#warning \"hi\"
+int main(void) { return 0; }"
+c23_warning
 )
 
 if(c23_has_c_attribute)
@@ -68,6 +68,15 @@ int main(){ return 0; }"
 c23_maybe_unused
 )
 
+if(c23_warning)
+check_source_compiles(C
+"#if !__has_c_attribute(reproducible)
+#error \"no reproducible attribute\"
+#endif
+int main(){ return 0; }"
+c23_reproducible
+)
+
 # https://en.cppreference.com/w/c/compiler_support/23
 check_source_compiles(C
 "#if !__has_c_attribute(unsequenced)
@@ -76,6 +85,7 @@ check_source_compiles(C
 int main(){ return 0; }"
 c23_unsequenced
 )
+endif()
 
 endif()
 
@@ -88,12 +98,16 @@ int main(void) { return 0; }"
 c23_elifdef
 )
 
-# MSVC 19.39 didn't yet have #warning
+if(c23_warning)
+# https://en.cppreference.com/w/c/language/constexpr
 check_source_compiles(C
-"#warning \"hi\"
-int main(void) { return 0; }"
-c23_warning
+"int main(void){
+  constexpr int i = 0;
+  return i;
+}"
+c23_constexpr
 )
+endif()
 
 check_source_compiles(C
 "#include <stddef.h>
@@ -101,32 +115,41 @@ int main(void){ int i = nullptr; return 0; }"
 c23_nullptr
 )
 
+set(f23 has_include
+fallthrough maybe_unused noreturn nullptr
+strdup strndup
+constexpr limits reproducible unsequenced
+unreachable
+)
 
-foreach(t IN ITEMS fallthrough maybe_unused noreturn nullptr
-  strdup strndup)
+foreach(t IN LISTS f23)
   if(c23_${t})
-    add_executable(C23_${t} ${t}.c)
-    add_test(NAME C23_${t} COMMAND C23_${t})
+    add_executable(${t} ${t}.c)
+    if(NOT t STREQUAL unreachable)
+      add_test(NAME ${t} COMMAND ${t})
+    endif()
   endif()
 endforeach()
 
-# tests with fallback
-foreach(t IN ITEMS constexpr limits reproducible unsequenced)
-  add_executable(C23_${t} ${t}.c)
-  target_compile_definitions(C23_${t} PRIVATE $<$<BOOL:${c23_warning}>:HAVE_WARNING>)
-  add_test(NAME C23_${t} COMMAND C23_${t})
-endforeach()
-
-target_link_libraries(C23_constexpr PRIVATE $<$<BOOL:${UNIX}>:m>)
-target_compile_definitions(C23_constexpr PRIVATE $<$<BOOL:${c23_constexpr}>:HAVE_CONSTEXPR>)
-set_property(TEST C23_constexpr PROPERTY PASS_REGULAR_EXPRESSION "0.6969")
-
+if(c23_constexpr)
+target_link_libraries(constexpr PRIVATE $<$<BOOL:${UNIX}>:m>)
+target_compile_definitions(constexpr PRIVATE $<$<BOOL:${c23_constexpr}>:HAVE_CONSTEXPR>)
+set_property(TEST constexpr PROPERTY PASS_REGULAR_EXPRESSION "0.6969")
+endif()
 
 if(c23_unreachable)
-  add_executable(C23_unreachable unreachable.c)
-
-  add_test(NAME C23_unreachable
-  COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:C23_unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
+  add_test(NAME unreachable
+  COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
   )
-  set_property(TEST C23_unreachable PROPERTY WILL_FAIL TRUE)
+  set_tests_properties(unreachable PROPERTIES WILL_FAIL TRUE)
+endif()
+
+
+# --- count features enabled
+get_property(t DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY BUILDSYSTEM_TARGETS)
+list(LENGTH f23 Nf)
+list(LENGTH t Ne)
+message(STATUS "C23 features: ${Ne} / ${Nf}")
+if(Ne LESS Nf)
+  message(STATUS "enabled targets: ${t}")
 endif()
