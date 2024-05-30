@@ -115,7 +115,7 @@ int main(void){ int i = nullptr; return 0; }"
 c23_nullptr
 )
 
-set(f23 has_include
+set(f23 bool has_c_attribute has_include
 fallthrough maybe_unused noreturn nullptr
 strdup strndup
 constexpr limits reproducible unsequenced
