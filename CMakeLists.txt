@@ -13,6 +13,11 @@ set(CMAKE_C_STANDARD 23)
 
 option(cppcheck "Run cppcheck")
 
+check_include_file(stdlib.h HAVE_STDLIB)
+if(NOT HAVE_STDLIB)
+  message(FATAL_ERROR "stdlib.h not found")
+endif()
+
 if(MSVC)
   set(CMAKE_REQUIRED_FLAGS "/WX")
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|^Intel")
