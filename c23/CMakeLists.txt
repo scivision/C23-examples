@@ -35,45 +35,40 @@ check_source_compiles(C
 c23_bool
 )
 
+block()
+
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
 # MSVC 19.39 didn't yet have #warning
-check_source_compiles(C
-"#warning \"hi\"
-int main(void) { return 0; }"
-c23_warning
-)
+check_source_compiles(C "#warning \"hi\"" c23_warning)
 
 if(c23_has_c_attribute)
 
 check_source_compiles(C
 "#if !__has_c_attribute(fallthrough)
 #error \"no fallthrough attribute\"
-#endif
-int main(){ return 0; }"
+#endif"
 c23_fallthrough
 )
 
 check_source_compiles(C
 "#if !__has_c_attribute(noreturn)
 #error \"no noreturn attribute\"
-#endif
-int main(){ return 0; }"
+#endif"
 c23_noreturn
 )
 
 check_source_compiles(C
 "#if !__has_c_attribute(maybe_unused)
 #error \"no maybe_unused attribute\"
-#endif
-int main(){ return 0; }"
+#endif"
 c23_maybe_unused
 )
 
-if(c23_warning)
 check_source_compiles(C
 "#if !__has_c_attribute(reproducible)
 #error \"no reproducible attribute\"
-#endif
-int main(){ return 0; }"
+#endif"
 c23_reproducible
 )
 
@@ -81,11 +76,9 @@ c23_reproducible
 check_source_compiles(C
 "#if !__has_c_attribute(unsequenced)
 #error \"no unsequenced attribute\"
-#endif
-int main(){ return 0; }"
+#endif"
 c23_unsequenced
 )
-endif()
 
 endif()
 
@@ -93,12 +86,10 @@ check_source_compiles(C
 "#ifdef N
 #elifdef M
 #elifndef Y
-#endif
-int main(void) { return 0; }"
+#endif"
 c23_elifdef
 )
 
-if(c23_warning)
 # https://en.cppreference.com/w/c/language/constexpr
 check_source_compiles(C
 "int main(void){
@@ -107,7 +98,8 @@ check_source_compiles(C
 }"
 c23_constexpr
 )
-endif()
+
+endblock()
 
 check_source_compiles(C
 "#include <stddef.h>

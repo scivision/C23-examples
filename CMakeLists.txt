@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 3.21...3.30)
+cmake_minimum_required(VERSION 3.25...3.30)
 # CMake 3.21 required for C23 support.
+# 3.25 for block()
 
 project(C23examples LANGUAGES C)
 
