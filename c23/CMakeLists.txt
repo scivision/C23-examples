@@ -1,11 +1,6 @@
 set_property(DIRECTORY PROPERTY LABELS C23)
 
-message(STATUS "C23 configuration checks:")
-
-set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT2__=1)
-
-check_symbol_exists(__STDC_ALLOC_LIB__ "stdio.h" c23_alloc)
-# https://en.cppreference.com/w/c/experimental/dynamic
+set(CMAKE_C_STANDARD 23)
 
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
 check_symbol_exists(static_assert "" c23_static_assert)
@@ -16,11 +11,8 @@ check_symbol_exists(__has_include "" c23_has_include)
 # GCC >= 11
 check_symbol_exists(__has_c_attribute "" c23_has_c_attribute)
 
-if(c23_alloc)
-  # else false positive from non-POSIX following compilers
-  check_symbol_exists(strndup "string.h" c23_strndup)
-  check_symbol_exists(strdup "string.h" c23_strdup)
-endif()
+check_symbol_exists(strndup "string.h" c23_strndup)
+check_symbol_exists(strdup "string.h" c23_strdup)
 
 check_symbol_exists(BOOL_WIDTH "limits.h" c23_limits)
 
@@ -103,18 +95,11 @@ endblock()
 
 check_source_compiles(C
 "#include <stddef.h>
-int main(void){ int i = nullptr; return 0; }"
+int main(void){ nullptr_t p = nullptr; return 0; }"
 c23_nullptr
 )
 
-set(f23 bool has_c_attribute has_include
-fallthrough maybe_unused noreturn nullptr
-strdup strndup
-constexpr limits reproducible unsequenced
-unreachable
-)
-
-foreach(t IN LISTS f23)
+foreach(t IN LISTS c23features)
   if(c23_${t})
     add_executable(${t} ${t}.c)
     if(NOT t STREQUAL unreachable)
@@ -124,9 +109,9 @@ foreach(t IN LISTS f23)
 endforeach()
 
 if(c23_constexpr)
-target_link_libraries(constexpr PRIVATE $<$<BOOL:${UNIX}>:m>)
-target_compile_definitions(constexpr PRIVATE $<$<BOOL:${c23_constexpr}>:HAVE_CONSTEXPR>)
-set_property(TEST constexpr PROPERTY PASS_REGULAR_EXPRESSION "0.6969")
+  target_link_libraries(constexpr PRIVATE $<$<BOOL:${UNIX}>:m>)
+  target_compile_definitions(constexpr PRIVATE $<$<BOOL:${c23_constexpr}>:HAVE_CONSTEXPR>)
+  set_property(TEST constexpr PROPERTY PASS_REGULAR_EXPRESSION "0.6969")
 endif()
 
 if(c23_unreachable)
@@ -134,14 +119,4 @@ if(c23_unreachable)
   COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
   )
   set_tests_properties(unreachable PROPERTIES WILL_FAIL TRUE)
-endif()
-
-
-# --- count features enabled
-get_property(t DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY BUILDSYSTEM_TARGETS)
-list(LENGTH f23 Nf)
-list(LENGTH t Ne)
-message(STATUS "C23 features: ${Ne} / ${Nf}")
-if(Ne LESS Nf)
-  message(STATUS "enabled targets: ${t}")
 endif()

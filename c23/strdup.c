@@ -1,9 +1,4 @@
-#ifdef __STDC_ALLOC_LIB__
-#define __STDC_WANT_LIB_EXT2__ 1
-#else
-#warning "C23 strdup not available. Falling back to POSIX strdup."
-#define _POSIX_C_SOURCE 200809L
-#endif
+// https://en.cppreference.com/w/c/string/byte/strdup
 
 #include <string.h>
 #include <assert.h>

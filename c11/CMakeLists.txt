@@ -1,6 +1,6 @@
 set_property(DIRECTORY PROPERTY LABELS C11)
 
-message(STATUS "C11 configuration checks:")
+set(CMAKE_C_STANDARD 11)
 
 # don't check __STDC_NO_VLA__  __STDC_NO_THREADS__
 # as you need a try_run() to read the macro values.
@@ -23,24 +23,24 @@ int main(void) { f(); return EXIT_FAILURE; }"
 c11_noreturn
 )
 
-foreach(t IN ITEMS generic noreturn static_assert)
-  if(c11_${t})
-    add_executable(C11_${t} ${t}.c)
-    add_test(NAME C11_${t} COMMAND C11_${t})
-  endif()
-endforeach()
-
-
-# --- variable length array
 check_source_compiles(C
 "int main(void){for (int i = 1; i < 5; i++){int a[i];} return 0;}"
 c11_vla
 )
-if(c11_vla)
-  add_executable(vla vla.c)
-  add_test(NAME VariableLengthArray COMMAND vla 3)
-  set_property(TEST VariableLengthArray PROPERTY PASS_REGULAR_EXPRESSION "^1 2 3[ \t\r\n]+$")
-endif()
+
+foreach(t IN LISTS c11features)
+  if(c11_${t})
+    add_executable(${t} ${t}.c)
+
+    if(c11_vla AND t STREQUAL "vla")
+      add_test(NAME VariableLengthArray COMMAND vla 3)
+      set_property(TEST VariableLengthArray PROPERTY PASS_REGULAR_EXPRESSION "^1 2 3[ \t\r\n]+$")
+    else()
+      add_test(NAME C11_${t} COMMAND ${t})
+    endif()
+  endif()
+endforeach()
+
 
 # --- threading (typically not supported)
 check_include_file(threads.h c11_thread_h)

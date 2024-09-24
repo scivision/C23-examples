@@ -10,8 +10,6 @@ include(CheckIncludeFile)
 include(CheckSourceCompiles)
 include(CheckSymbolExists)
 
-set(CMAKE_C_STANDARD 23)
-
 option(cppcheck "Run cppcheck")
 
 check_include_file(stdlib.h HAVE_STDLIB)
@@ -35,9 +33,26 @@ if(cppcheck)
 endif()
 
 # --- examples
+set(c99features designated restrict)
 
-foreach(s IN ITEMS c99 c11 c11_annex_k c23 posix)
+set(c11features generic c11noreturn static_assert vla)
+
+set(c11annexfeatures getenv_s tmpnam_s tmpfile_s strcpy_s)
+
+set(c23features bool has_c_attribute has_include
+fallthrough maybe_unused noreturn nullptr
+strdup strndup
+constexpr limits reproducible unsequenced
+unreachable
+)
+
+set(stds c99 c11 c11annex c23)
+
+foreach(s IN LISTS stds)
   add_subdirectory(${s})
 endforeach()
 
 file(GENERATE OUTPUT .gitignore CONTENT "*")
+
+# --- count features enabled by language standard
+include(cmake/features.cmake)
