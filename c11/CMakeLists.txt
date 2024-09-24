@@ -20,7 +20,7 @@ check_source_compiles(C
 #include <stdnoreturn.h>
 noreturn void f(){ exit(0); }
 int main(void) { f(); return EXIT_FAILURE; }"
-c11_noreturn
+c11_c11noreturn
 )
 
 check_source_compiles(C

@@ -31,8 +31,9 @@ block()
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
-# MSVC 19.39 didn't yet have #warning
-check_source_compiles(C "#warning \"hi\"" c23_warning)
+if(NOT DEFINED c23_warning)
+  try_compile(c23_warning SOURCE_FROM_CONTENT main.c "#warning \"hello\"")
+endif()
 
 if(c23_has_c_attribute)
 
