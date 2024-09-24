@@ -2,12 +2,12 @@
 
 ## strdup
 
- [strdup](https://en.cppreference.com/w/c/experimental/dynamic/strndup)
+ [strdup](https://en.cppreference.com/w/c/string/byte/strdup)
  is present in all the current C compilers we trid.
 
 ## strndup
 
-Observed: [strndup](https://en.cppreference.com/w/c/experimental/dynamic/strndup) is present in:
+Observed: [strndup](https://en.cppreference.com/w/c/string/byte/strndup) is present in:
 * Linux: GCC, Clang, oneAPI, NVIDIA HPC (nvc), AMD AOCC (clang)
 
 strndup is NOT present in:
