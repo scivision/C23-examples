@@ -12,7 +12,6 @@ env:
   CMAKE_BUILD_PARALLEL_LEVEL: 4
   CTEST_PARALLEL_LEVEL: 0
   CTEST_NO_TESTS_ACTION: error
-  HOMEBREW_NO_AUTO_UPDATE: 1
 
 
 jobs:
@@ -55,9 +54,7 @@ jobs:
 
     strategy:
       matrix:
-        cc: [clang]
-
-  # gcc-13 broken in general on GHA
+        cc: [clang, gcc-14]
 
     steps:
     - uses: actions/checkout@v4
