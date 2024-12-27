@@ -31,6 +31,27 @@ string(JSON j SET ${j} compiler target \"${CMAKE_SYSTEM_PROCESSOR}\")
 string(JSON j SET ${j} compiler flags \"${CMAKE_C_FLAGS}\")
 string(JSON j SET ${j} compiler sysroot \"${CMAKE_OSX_SYSROOT}\")
 
+if(NOT DEFINED stdc_version)
+
+  message(CHECK_START "Checking C standard library version")
+  # Intel, IntelLLVM and NVHPC on Linux use GNU libc
+  try_run(stdc_run _stdc_build_ok
+    SOURCES ${CMAKE_CURRENT_LIST_DIR}/libc_version.c
+    RUN_OUTPUT_STDOUT_VARIABLE _stdc_version
+  )
+
+  if(NOT stdc_run EQUAL 0)
+    message(CHECK_FAIL "Could not determine libc version ${stdc_build_ok} ${stdc_run} ${_stdc_version}")
+  else()
+    string(STRIP "${_stdc_version}" _stdc_version)
+    set(stdc_version "${_stdc_version}" CACHE STRING "C standard library version")
+    message(CHECK_PASS "${stdc_version}")
+  endif()
+
+endif()
+
+string(JSON j SET ${j} compiler stdc \"${stdc_version}\")
+
 set(feature_file ${CMAKE_CURRENT_BINARY_DIR}/features.json)
 
 file(WRITE ${feature_file} ${j})
