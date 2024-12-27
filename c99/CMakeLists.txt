@@ -38,3 +38,7 @@ foreach(t IN LISTS c99features)
     add_test(NAME ${t} COMMAND ${t})
   endif()
 endforeach()
+
+if(TARGET restrict)
+  target_compile_options(restrict PRIVATE $<$<C_COMPILER_ID:GNU>:-Wno-dangling-pointer>)
+endif()
