@@ -36,42 +36,16 @@ if(NOT DEFINED c23_warning)
 endif()
 
 if(c23_has_c_attribute)
-
-check_source_compiles(C
-"#if !__has_c_attribute(fallthrough)
-#error \"no fallthrough attribute\"
-#endif"
-c23_fallthrough
-)
-
-check_source_compiles(C
-"#if !__has_c_attribute(noreturn)
-#error \"no noreturn attribute\"
-#endif"
-c23_noreturn
-)
-
-check_source_compiles(C
-"#if !__has_c_attribute(maybe_unused)
-#error \"no maybe_unused attribute\"
-#endif"
-c23_maybe_unused
-)
-
-check_source_compiles(C
-"#if !__has_c_attribute(reproducible)
-#error \"no reproducible attribute\"
-#endif"
-c23_reproducible
-)
-
 # https://en.cppreference.com/w/c/compiler_support/23
-check_source_compiles(C
-"#if !__has_c_attribute(unsequenced)
-#error \"no unsequenced attribute\"
-#endif"
-c23_unsequenced
-)
+
+foreach(a IN ITEMS fallthrough maybe_unused nodiscard noreturn reproducible unsequenced)
+  check_source_compiles(C
+  "#if !__has_c_attribute(${a})
+  #error \"no ${a} attribute\"
+  #endif"
+  c23_${a}
+  )
+endforeach()
 
 endif()
 

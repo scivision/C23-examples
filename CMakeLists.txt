@@ -39,8 +39,9 @@ set(c11features generic c11noreturn static_assert vla)
 
 set(c11annexfeatures getenv_s tmpnam_s tmpfile_s strcpy_s)
 
-set(c23features bool has_c_attribute has_include
-fallthrough maybe_unused noreturn nullptr
+set(c23features bool has_include
+fallthrough maybe_unused
+nodiscard noreturn nullptr
 strdup strndup
 constexpr limits reproducible unsequenced
 unreachable

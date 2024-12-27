@@ -1,5 +1,5 @@
 #if !__has_c_attribute(nodiscard)
-#error "missing __has_c_attribute"
+#error "missing [[nodiscard]]"
 #endif
 
 [[nodiscard]]
