@@ -24,9 +24,9 @@ int main(void)
 
     puts("----------------");
 
-    auto cloned_nullptr = nullptr;
-    auto cloned_NULL   = NULL;
-    auto cloned_zero   = 0;
+    nullptr_t cloned_nullptr = nullptr;
+    nullptr_t cloned_NULL   = NULL;
+    nullptr_t cloned_zero   = 0;
     g(cloned_nullptr); // Fine
 //  g(cloned_NULL);    // ERROR
 //  g(cloned_zero);    // ERROR

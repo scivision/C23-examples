@@ -1,10 +1,9 @@
-#if __has_c_attribute(nodiscard)
-#  define NODISCARD [[nodiscard]]
-#else
-#  define NODISCARD
+#if !__has_c_attribute(nodiscard)
+#error "missing __has_c_attribute"
 #endif
 
-NODISCARD int addone(int x) {
+[[nodiscard]]
+int addone(int x) {
     return x + 1;
 }
 

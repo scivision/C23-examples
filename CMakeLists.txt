@@ -21,7 +21,7 @@ if(MSVC)
   set(CMAKE_REQUIRED_FLAGS "/WX")
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|^Intel")
   set(CMAKE_REQUIRED_FLAGS "-Werror")
-  add_compile_options(-Wall -Wextra)
+  add_compile_options(-Wall -Wextra -Wno-unused-variable)
   # makes unsupported attributes checks error.
 endif()
 

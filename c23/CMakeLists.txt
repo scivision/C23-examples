@@ -96,7 +96,10 @@ endblock()
 
 check_source_compiles(C
 "#include <stddef.h>
-int main(void){ nullptr_t p = nullptr; return 0; }"
+int main(void){
+nullptr_t p = nullptr;
+return 0;
+}"
 c23_nullptr
 )
 
@@ -111,7 +114,6 @@ endforeach()
 
 if(c23_constexpr)
   target_link_libraries(constexpr PRIVATE $<$<BOOL:${UNIX}>:m>)
-  target_compile_definitions(constexpr PRIVATE $<$<BOOL:${c23_constexpr}>:HAVE_CONSTEXPR>)
   set_property(TEST constexpr PROPERTY PASS_REGULAR_EXPRESSION "0.6969")
 endif()
 
