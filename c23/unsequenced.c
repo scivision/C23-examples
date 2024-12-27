@@ -1,24 +1,13 @@
 // https://stackoverflow.com/a/76847906
 
-#ifdef __has_c_attribute
-#if __has_c_attribute(unsequenced)
-#define UNSEQ [[unsequenced]]
-#endif
-#endif
-#ifndef UNSEQ
-#if defined(__GNUC__) || defined(__clang__)
-#warning "substituting attribute const for unsequenced"
-#define UNSEQ __attribute__ ((const))
-#else
-#warning "unsequenced attribute not supported"
-#define UNSEQ
-#endif
+#if !__has_c_attribute(unsequenced)
+#error "missing [[unsequenced]]"
 #endif
 
 #include <stdio.h>
 #include <stdlib.h>
 
-UNSEQ
+[[unsequenced]]
 int sum(int a, int b){
     return a + b;
 }
