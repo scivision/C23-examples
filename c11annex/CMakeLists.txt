@@ -16,7 +16,7 @@ check_symbol_exists(tmpfile_s "stdio.h" c11_tmpfile_s)
 
 
 foreach(t IN LISTS c11annex)
-  if(c11_${t})
+  if(c11_${t} AND EXISTS ${t}.c)
     add_executable(${t} ${t}.c)
 
     if(c11_strcpy_s AND c11_constraint_handler_s OR NOT MSVC AND t STREQUAL "strcpy_s")
