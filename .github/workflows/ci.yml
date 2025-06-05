@@ -7,6 +7,12 @@ on:
       - "**/CMakeLists.txt"
       - "**.c"
       - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+# avoid wasted runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: 4
@@ -17,7 +23,7 @@ env:
 jobs:
 
   linux-new:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
 
     strategy:
@@ -73,13 +79,14 @@ jobs:
 
     steps:
     - uses: msys2/setup-msys2@v2
+      id: msys2
       with:
         update: true
         install: >-
-          mingw-w64-x86_64-gcc
+          mingw-w64-ucrt-x86_64-gcc
 
     - name: Put MSYS2_MinGW64 on PATH
-      run: echo "${{ runner.temp }}/msys64/mingw64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      run: echo "${{ steps.msys2.outputs.msys2-location }}/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - uses: actions/checkout@v4
 
