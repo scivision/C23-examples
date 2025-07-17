@@ -16,20 +16,14 @@ check_symbol_exists(strdup "string.h" c23_strdup)
 
 check_symbol_exists(BOOL_WIDTH "limits.h" c23_limits)
 
-check_source_compiles(C
-"int main(void){ auto i = 0; return 0; }"
-c23_auto_type
-)
-
-# for auto and bool, check_symbol_exists() is not appropriate as they're not symbols in C23che
-check_source_compiles(C
-"int main(void){ bool b = true; return 0; }"
-c23_bool
-)
 
 block()
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
+# for auto and bool, check_symbol_exists() is not appropriate as they're not symbols in C23che
+check_source_compiles(C "auto i = 0;" c23_auto_type)
+check_source_compiles(C "bool b = true;" c23_bool)
 
 if(NOT DEFINED c23_warning)
   try_compile(c23_warning SOURCE_FROM_CONTENT main.c "#warning \"hello\"")
@@ -58,24 +52,16 @@ c23_elifdef
 )
 
 # https://en.cppreference.com/w/c/language/constexpr
+check_source_compiles(C "constexpr int i = 0;" c23_constexpr)
+
 check_source_compiles(C
-"int main(void){
-  constexpr int i = 0;
-  return i;
-}"
-c23_constexpr
+"#include <stddef.h>
+nullptr_t p = nullptr;"
+c23_nullptr
 )
 
 endblock()
 
-check_source_compiles(C
-"#include <stddef.h>
-int main(void){
-nullptr_t p = nullptr;
-return 0;
-}"
-c23_nullptr
-)
 
 foreach(t IN LISTS c23features)
   if(c23_${t})

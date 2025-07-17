@@ -29,7 +29,7 @@ endif()
 if(cppcheck)
   find_program(cppcheck_exe NAMES cppcheck REQUIRED)
   set(cppcheck_opts --enable=all --inline-suppr --quiet --suppressions-list=${PROJECT_SOURCE_DIR}/cppcheck.supp)
-  set(CMAKE_C_CPPCHECK ${cppcheck_exe} --std=c${CMAKE_C_STANDARD} ${cppcheck_opts})
+  set(CMAKE_C_CPPCHECK ${cppcheck_exe} --std=c23 ${cppcheck_opts})
 endif()
 
 # --- examples
