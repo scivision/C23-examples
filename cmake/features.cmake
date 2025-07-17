@@ -25,11 +25,13 @@ endforeach()
 string(JSON j SET ${j} compiler "{}")
 string(JSON j SET ${j} compiler vendor \"${CMAKE_C_COMPILER_ID}\")
 string(JSON j SET ${j} compiler version \"${CMAKE_C_COMPILER_VERSION}\")
-string(JSON j SET ${j} compiler system \"${CMAKE_SYSTEM_NAME}\")
-string(JSON j SET ${j} compiler system_version \"${CMAKE_SYSTEM_VERSION}\")
-string(JSON j SET ${j} compiler target \"${CMAKE_SYSTEM_PROCESSOR}\")
 string(JSON j SET ${j} compiler flags \"${CMAKE_C_FLAGS}\")
-string(JSON j SET ${j} compiler sysroot \"${CMAKE_OSX_SYSROOT}\")
+
+string(JSON j SET ${j} platform "{}")
+string(JSON j SET ${j} platform system \"${CMAKE_SYSTEM_NAME}\")
+string(JSON j SET ${j} platform system_version \"${CMAKE_SYSTEM_VERSION}\")
+string(JSON j SET ${j} platform target_arch \"${CMAKE_SYSTEM_PROCESSOR}\")
+string(JSON j SET ${j} platform sysroot \"${CMAKE_OSX_SYSROOT}\")
 
 if(NOT DEFINED stdc_version)
 
