@@ -33,6 +33,12 @@ string(JSON j SET ${j} platform system_version \"${CMAKE_SYSTEM_VERSION}\")
 string(JSON j SET ${j} platform target_arch \"${CMAKE_SYSTEM_PROCESSOR}\")
 string(JSON j SET ${j} platform sysroot \"${CMAKE_OSX_SYSROOT}\")
 
+string(JSON j SET ${j} cmake "{}")
+string(JSON j SET ${j} cmake version \"${CMAKE_VERSION}\")
+string(JSON j SET ${j} cmake generator \"${CMAKE_GENERATOR}\")
+string(JSON j SET ${j} cmake build_type \"${CMAKE_BUILD_TYPE}\")
+
+
 if(NOT DEFINED stdc_version)
 
   message(CHECK_START "Checking C standard library version")

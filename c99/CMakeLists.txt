@@ -1,5 +1,8 @@
 set_property(DIRECTORY PROPERTY LABELS C99)
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+# speeds testing up to 2x
+
 set(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
 
 check_symbol_exists(secure_getenv "stdlib.h" HAVE_SECURE_GETENV)

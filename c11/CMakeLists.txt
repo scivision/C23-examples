@@ -2,10 +2,13 @@ set_property(DIRECTORY PROPERTY LABELS C11)
 
 set(CMAKE_C_STANDARD 11)
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+# speeds testing up to 2x
+
 # don't check __STDC_NO_VLA__  __STDC_NO_THREADS__
 # as you need a try_run() to read the macro values.
 # faster to just check_source_compiles() a minimal test program.
-check_symbol_exists(static_assert "assert.h" c11_static_assert)
+check_symbol_exists("static_assert" "assert.h" c11_static_assert)
 
 # --- Generic
 file(READ generic.c _src)
@@ -16,15 +19,14 @@ check_source_compiles(C "${_src}" c11_generic)
 # deprecated by [[noreturn]] in C23
 # https://en.cppreference.com/w/c/language/_Noreturn
 check_source_compiles(C
-"#include <stdlib.h>
+"#include <stdlib.h>  // for exit()
 #include <stdnoreturn.h>
-noreturn void f(){ exit(0); }
-int main(void) { f(); return EXIT_FAILURE; }"
+noreturn void f(){ exit(0); }"
 c11_c11noreturn
 )
 
 check_source_compiles(C
-"int main(void){for (int i = 1; i < 5; i++){int a[i];} return 0;}"
+"void f(void) { for (int i = 1; i < 5; i++){int a[i];} }"
 c11_vla
 )
 
@@ -43,11 +45,11 @@ endforeach()
 
 
 # --- threading (typically not supported)
-check_include_file(threads.h c11_thread_h)
+check_include_file("threads.h" c11_thread_h)
 if(c11_thread_h)
   check_source_compiles(C
   "#include <threads.h>
-  int main(void){ thrd_t tid; return 0; }"
+  thrd_t tid;"
   c11_thread
   )
 endif()

@@ -2,6 +2,9 @@ set_property(DIRECTORY PROPERTY LABELS C11_Annex_K)
 
 set(CMAKE_C_STANDARD 11)
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+# speeds testing up to 2x
+
 set(CMAKE_REQUIRED_DEFINITIONS -D__STDC_WANT_LIB_EXT1__=1)
 
 check_symbol_exists(__STDC_LIB_EXT1__ "" c11_lib_ext1)

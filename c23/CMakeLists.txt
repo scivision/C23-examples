@@ -2,6 +2,9 @@ set_property(DIRECTORY PROPERTY LABELS C23)
 
 set(CMAKE_C_STANDARD 23)
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+# speeds testing up to 2x
+
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
 check_symbol_exists(static_assert "" c23_static_assert)
 
@@ -17,16 +20,12 @@ check_symbol_exists(strdup "string.h" c23_strdup)
 check_symbol_exists(BOOL_WIDTH "limits.h" c23_limits)
 
 
-block()
-
-set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
-
 # for auto and bool, check_symbol_exists() is not appropriate as they're not symbols in C23che
 check_source_compiles(C "auto i = 0;" c23_auto_type)
 check_source_compiles(C "bool b = true;" c23_bool)
 
 if(NOT DEFINED c23_warning)
-  try_compile(c23_warning SOURCE_FROM_CONTENT main.c "#warning \"hello\"")
+  try_compile(c23_warning SOURCE_FROM_CONTENT "main.c" "#warning \"hello\"")
 endif()
 
 if(c23_has_c_attribute)
@@ -60,8 +59,7 @@ nullptr_t p = nullptr;"
 c23_nullptr
 )
 
-endblock()
-
+# CTest setup
 
 foreach(t IN LISTS c23features)
   if(c23_${t})
