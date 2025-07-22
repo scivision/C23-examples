@@ -8,7 +8,6 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 # don't check __STDC_NO_VLA__  __STDC_NO_THREADS__
 # as you need a try_run() to read the macro values.
 # faster to just check_source_compiles() a minimal test program.
-check_symbol_exists("static_assert" "assert.h" c11_static_assert)
 
 # --- Generic
 file(READ generic.c _src)

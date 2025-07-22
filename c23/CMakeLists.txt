@@ -6,7 +6,6 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 # speeds testing up to 2x
 
 check_symbol_exists(unreachable "stddef.h" c23_unreachable)
-check_symbol_exists(static_assert "" c23_static_assert)
 
 # GCC >= 7
 check_symbol_exists(__has_include "" c23_has_include)
@@ -22,6 +21,8 @@ check_symbol_exists(BOOL_WIDTH "limits.h" c23_limits)
 
 check_source_compiles(C "auto i = 0;" c23_auto_type)
 check_source_compiles(C "bool b = true;" c23_bool)
+
+check_source_compiles(C "static_assert(1);" c23_static_assert)
 
 if(NOT DEFINED c23_warning)
   try_compile(c23_warning SOURCE_FROM_CONTENT "main.c" "#warning \"hello\"")

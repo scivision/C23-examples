@@ -35,7 +35,7 @@ endif()
 # --- examples
 set(c99features designated restrict)
 
-set(c11features generic c11noreturn static_assert vla)
+set(c11features generic c11noreturn vla)
 
 set(c11annexfeatures getenv_s tmpnam_s tmpfile_s strcpy_s)
 
@@ -44,6 +44,7 @@ fallthrough maybe_unused
 nodiscard noreturn nullptr
 strdup strndup
 constexpr limits reproducible unsequenced
+static_assert
 unreachable
 )
 
