@@ -1,14 +1,11 @@
 // https://stackoverflow.com/a/76847906
 
-#if !__has_c_attribute(reproducible)
-#error "no [[reproducible]] attribute"
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 
+int sum(int a, int b)
 [[reproducible]]
-int sum(int a, int b){
+{
     return a + b;
 }
 
@@ -20,10 +17,11 @@ int main(){
     c = sum(a+1, b);
     c = sum(a, b);
 
-    printf("%d\n", c);
-
-    if(c != 3)
+    if(c != 3){
+      fprintf(stderr, "Error: expected 3, got %d\n", c);
       return EXIT_FAILURE;
+    }
 
+    printf("OK: %d\n", c);
     return EXIT_SUCCESS;
 }
