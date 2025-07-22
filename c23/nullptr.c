@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void g(int*)
+void g([[maybe_unused]] int* arg)
 {
     puts("Function g called");
 }
