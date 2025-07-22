@@ -20,7 +20,6 @@ check_symbol_exists(strdup "string.h" c23_strdup)
 check_symbol_exists(BOOL_WIDTH "limits.h" c23_limits)
 
 
-# for auto and bool, check_symbol_exists() is not appropriate as they're not symbols in C23che
 check_source_compiles(C "auto i = 0;" c23_auto_type)
 check_source_compiles(C "bool b = true;" c23_bool)
 
@@ -53,8 +52,8 @@ c23_elifdef
 # https://en.cppreference.com/w/c/language/constexpr
 check_source_compiles(C "constexpr int i = 0;" c23_constexpr)
 
-check_source_compiles(C
-"#include <stddef.h>
+# test has nullptr_t otherwise you're testing for a macro but not the type
+check_source_compiles(C "#include <stddef.h>
 nullptr_t p = nullptr;"
 c23_nullptr
 )
