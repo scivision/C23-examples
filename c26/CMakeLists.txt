@@ -1,7 +1,5 @@
 set_property(DIRECTORY PROPERTY LABELS C26)
 
-set(CMAKE_C_STANDARD 26)
-
 
 if(CMAKE_VERSION VERSION_LESS 4.2)
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -15,6 +13,10 @@ if(CMAKE_VERSION VERSION_LESS 4.2)
     endif()
     set(c26_flags -std=c2y)
   endif()
+elseif("c_std_26" IN_LIST CMAKE_C_COMPILE_FEATURES)
+  set(CMAKE_C_STANDARD 26)
+else()
+  return()
 endif()
 
 if(DEFINED c26_flags)
