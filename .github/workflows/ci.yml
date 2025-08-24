@@ -31,9 +31,11 @@ jobs:
         cc: [gcc-12, gcc-13, gcc-14, clang-18]
 
     steps:
-    - uses: actions/checkout@v4
+    - &checkout
+      uses: actions/checkout@v5
 
-    - run: cmake --workflow default
+    - &workflow
+      run: cmake --workflow default
       env:
         CC: ${{ matrix.cc }}
 
@@ -47,11 +49,9 @@ jobs:
         cc: [gcc-9, gcc-10, gcc-11]
 
     steps:
-    - uses: actions/checkout@v4
+    - *checkout
 
-    - run: cmake --workflow default
-      env:
-        CC: ${{ matrix.cc }}
+    - *workflow
 
 
   mac:
@@ -63,16 +63,18 @@ jobs:
         cc: [clang, gcc-14]
 
     steps:
-    - uses: actions/checkout@v4
+    - *checkout
 
-    - run: cmake --workflow default
-      env:
-        CC: ${{ matrix.cc }}
+    - *workflow
 
 
   windows-msys:
     runs-on: windows-latest
     timeout-minutes: 10
+
+    strategy:
+      matrix:
+        cc: [clang, gcc]
 
     steps:
     - uses: msys2/setup-msys2@v2
@@ -80,14 +82,14 @@ jobs:
       with:
         update: true
         install: >-
-          mingw-w64-ucrt-x86_64-gcc
+          mingw-w64-ucrt-x86_64-${{ matrix.cc }}
 
     - name: Put MSYS2_MinGW64 on PATH
       run: echo "${{ steps.msys2.outputs.msys2-location }}/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-    - uses: actions/checkout@v4
+    - *checkout
 
-    - run: cmake --workflow default
+    - *workflow
 
 
   windows-msvc:
@@ -95,7 +97,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-    - uses: actions/checkout@v4
+    - *checkout
 
     - run: cmake --workflow debug
       env:
