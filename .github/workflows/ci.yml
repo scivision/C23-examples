@@ -30,14 +30,15 @@ jobs:
       matrix:
         cc: [gcc-12, gcc-13, gcc-14, clang-18]
 
+    env:
+      CC: ${{ matrix.cc }}
+
     steps:
     - &checkout
       uses: actions/checkout@v5
 
     - &workflow
       run: cmake --workflow default
-      env:
-        CC: ${{ matrix.cc }}
 
 
   linux-old:
@@ -46,10 +47,19 @@ jobs:
 
     strategy:
       matrix:
-        cc: [gcc-9, gcc-10, gcc-11]
+        gcc-version: [9, 10, 11]
+
+    env:
+      CC: gcc-${{ matrix.gcc-version }}
 
     steps:
     - *checkout
+
+    - name: GCC APT
+      if: matrix.gcc-version < 11
+      run: |
+        sudo apt update -y
+        sudo apt install -y --no-install-recommends gcc-${{ matrix.gcc-version }}
 
     - *workflow
 
@@ -63,9 +73,9 @@ jobs:
         cc: [clang, gcc-15]
 
     steps:
-    - name: Latest Xcode needed for GCC
-      if: startsWith(matrix.cc, 'gcc')
-      run: sudo xcode-select --switch /Library/Developer/CommandLineTools
+    # - name: Latest Xcode needed for GCC
+    #   if: startsWith(matrix.cc, 'gcc')
+    #   run: sudo xcode-select --switch /Library/Developer/CommandLineTools
 # This comes into play when GA is pinned to an old Xcode b/c Homebrew builds against latest
 # Every say year or two this becomes an issue.
 # https://github.com/Homebrew/homebrew-core/issues/228131
