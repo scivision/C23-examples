@@ -72,6 +72,9 @@ jobs:
       matrix:
         cc: [clang, gcc-15]
 
+    env:
+      CC: ${{ matrix.cc }}
+
     steps:
     # - name: Latest Xcode needed for GCC
     #   if: startsWith(matrix.cc, 'gcc')
@@ -92,6 +95,9 @@ jobs:
     strategy:
       matrix:
         cc: [clang, gcc]
+
+    env:
+      CC: ${{ matrix.cc }}
 
     steps:
     - uses: msys2/setup-msys2@v2
