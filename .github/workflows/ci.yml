@@ -35,7 +35,7 @@ jobs:
 
     steps:
     - &checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - &workflow
       run: cmake --workflow default
