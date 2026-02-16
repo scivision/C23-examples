@@ -7,6 +7,7 @@ on:
       - "**/CMakeLists.txt"
       - "**.c"
       - ".github/workflows/ci.yml"
+      - "CMakePresets.json"
   workflow_dispatch:
 
 # avoid wasted runs
