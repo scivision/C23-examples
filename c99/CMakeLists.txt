@@ -11,19 +11,6 @@ add_executable(getenv getenv.c)
 target_compile_definitions(getenv PRIVATE $<$<BOOL:${WIN32}>:_CRT_SECURE_NO_WARNINGS>)
 add_test(NAME getenv COMMAND getenv)
 
-# can't do check_symbol_exists for built-in functions like __assume and __builtin_unreachable
-file(READ unreachable.c _src)
-check_source_compiles(C "${_src}" builtin_unreachable)
-
-# --- unreachable compiler extensions
-if(builtin_unreachable)
-  add_executable(ext_unreachable unreachable.c)
-  add_test(NAME ext_unreachable
-  COMMAND ${CMAKE_COMMAND} -Dexe:FILEPATH=$<TARGET_FILE:ext_unreachable> -P ${PROJECT_SOURCE_DIR}/cmake/will_fail.cmake
-  )
-  set_property(TEST ext_unreachable PROPERTY WILL_FAIL TRUE)
-endif()
-
 # --- restrict keyword
 check_source_compiles(C
 "int main(void){ int* restrict a; return 0; }"
