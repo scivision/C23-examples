@@ -17,13 +17,6 @@ if(NOT HAVE_STDLIB)
   message(FATAL_ERROR "stdlib.h not found")
 endif()
 
-# makes unsupported attributes checks error
-if(MSVC)
-  set(CMAKE_REQUIRED_FLAGS "/WX")
-elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|^Intel")
-  set(CMAKE_REQUIRED_FLAGS "-Werror")
-endif()
-
 # CPPcheck
 if(cppcheck)
   find_program(cppcheck_exe NAMES cppcheck REQUIRED)
