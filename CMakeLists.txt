@@ -40,10 +40,10 @@ static_assert
 unreachable
 )
 
-set(c26features if_declaration)
+set(c2yfeatures if_declaration)
 # break_label on GCC 15.1 doesn't compile for -O1 or greater, only compilers for -O0
 
-set(stds c99 c11 c11annex c23 c26)
+set(stds c99 c11 c11annex c23 c2y)
 
 foreach(s IN LISTS stds)
   add_subdirectory(${s})
