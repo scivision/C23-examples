@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25...4.2)
+cmake_minimum_required(VERSION 3.25...4.3)
 # CMake 3.21 required for C23 support.
 # 3.25 for block()
 
@@ -40,8 +40,7 @@ static_assert
 unreachable
 )
 
-set(c2yfeatures if_declaration)
-# break_label on GCC 15.1 doesn't compile for -O1 or greater, only compilers for -O0
+set(c2yfeatures break_label if_declaration)
 
 set(stds c99 c11 c11annex c23 c2y)
 
