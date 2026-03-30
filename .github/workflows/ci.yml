@@ -16,14 +16,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  CTEST_PARALLEL_LEVEL: 0
-  CTEST_NO_TESTS_ACTION: error
-  CMAKE_GENERATOR: Ninja
+  HOMEBREW_NO_AUTO_UPDATE: 1
 
 
 jobs:
 
-  linux-new:
+  gcc-new:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -38,11 +36,17 @@ jobs:
     - &checkout
       uses: actions/checkout@v6
 
-    - &workflow
+    - &buildtest
       run: cmake --workflow default
 
+    - &features
+      uses: actions/upload-artifact@v7
+      if: success()
+      with:
+        name: ${{ runner.os }}-${{ env.CC }}_features.json
+        path: build/features.json
 
-  linux-old:
+  gcc-old:
     runs-on: ubuntu-22.04
     timeout-minutes: 5
 
@@ -62,19 +66,21 @@ jobs:
         sudo apt update -y
         sudo apt install -y --no-install-recommends gcc-${{ matrix.gcc-version }}
 
-    - *workflow
+    - *buildtest
+
+    - *features
 
 
   mac:
     runs-on: macos-latest
     timeout-minutes: 5
 
+    env:
+      CC: ${{ matrix.cc }}
+
     strategy:
       matrix:
         cc: [clang, gcc-15]
-
-    env:
-      CC: ${{ matrix.cc }}
 
     steps:
     # - name: Latest Xcode needed for GCC
@@ -86,10 +92,23 @@ jobs:
 
     - *checkout
 
-    - *workflow
+    - *buildtest
+
+    - *features
+
+  windows-msvc:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 10
+
+    steps:
+    - *checkout
+
+    - run: cmake --workflow msvc
+
+    - *features
 
 
-  windows-msys:
+  windows-gcc:
     runs-on: windows-latest
     timeout-minutes: 10
 
@@ -113,16 +132,13 @@ jobs:
 
     - *checkout
 
-    - *workflow
+    - *buildtest
 
+    - *features
 
-  windows-msvc:
-    runs-on: windows-2025-vs2026
-    timeout-minutes: 10
-
-    steps:
-    - *checkout
-
-    - run: cmake --workflow debug
-      env:
-        CMAKE_GENERATOR: Visual Studio 18 2026
+    - name: upload CMakeConfigureLog.yaml
+      if: failure()
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ runner.os }}-CMakeConfigureLog.yaml
+        path: build/CMakeFiles/CMakeConfigureLog.yaml
