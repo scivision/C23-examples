@@ -50,31 +50,14 @@ jobs:
 
     strategy:
       matrix:
-        cc: [gcc-12, gcc-13, gcc-14]
-
-    env:
-      CC: ${{ matrix.cc }}
-
-    steps:
-    - *checkout
-    - *workflow
-    - *features
-
-
-  ubuntu22:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 5
-
-    strategy:
-      matrix:
-        gcc-version: [9, 10, 11]
+        gcc-version: [10, 11, 12, 13, 14]
 
     env:
       CC: gcc-${{ matrix.gcc-version }}
 
     steps:
     - name: GCC APT
-      if: matrix.gcc-version < 10
+      if: matrix.gcc-version < 12
       run: |
         sudo apt update -y
         sudo apt install -y --no-install-recommends gcc-${{ matrix.gcc-version }}
@@ -82,6 +65,7 @@ jobs:
     - *checkout
     - *workflow
     - *features
+
 
   mac:
     runs-on: macos-latest
