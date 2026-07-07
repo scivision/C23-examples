@@ -18,13 +18,13 @@ concurrency:
 
 jobs:
 
-  linux-new:
-    runs-on: ubuntu-latest
+  ubuntu26:
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
 
     strategy:
       matrix:
-        cc: [gcc-12, gcc-13, gcc-14, clang-18]
+        cc: [gcc-15, clang-22]
 
     env:
       CC: ${{ matrix.cc }}
@@ -43,7 +43,25 @@ jobs:
         name: ${{ runner.os }}-${{ env.CC }}_features.json
         path: build/features.json
 
-  linux-old:
+
+  ubuntu24:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        cc: [gcc-12, gcc-13, gcc-14]
+
+    env:
+      CC: ${{ matrix.cc }}
+
+    steps:
+    - *checkout
+    - *workflow
+    - *features
+
+
+  ubuntu22:
     runs-on: ubuntu-22.04
     timeout-minutes: 5
 
@@ -55,16 +73,14 @@ jobs:
       CC: gcc-${{ matrix.gcc-version }}
 
     steps:
-    - *checkout
-
     - name: GCC APT
       if: matrix.gcc-version < 10
       run: |
         sudo apt update -y
         sudo apt install -y --no-install-recommends gcc-${{ matrix.gcc-version }}
 
+    - *checkout
     - *workflow
-
     - *features
 
   mac:
@@ -87,9 +103,7 @@ jobs:
 # https://github.com/Homebrew/homebrew-core/issues/228131
 
     - *checkout
-
     - *workflow
-
     - *features
 
 
@@ -118,9 +132,7 @@ jobs:
       run: echo "${{ steps.msys2.outputs.msys2-location }}/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - *checkout
-
     - *workflow
-
     - *features
 
 
@@ -130,7 +142,5 @@ jobs:
 
     steps:
     - *checkout
-
     - run: cmake --workflow msvc
-
     - *features
