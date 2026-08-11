@@ -8,7 +8,11 @@ set(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
 check_symbol_exists(secure_getenv "stdlib.h" HAVE_SECURE_GETENV)
 
 add_executable(getenv getenv.c)
-target_compile_definitions(getenv PRIVATE $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>)
+if(MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
+# the CMAKE_C_SIMULATE_ID catches when frontend is GNU but MSVC runtime headers are used
+  target_compile_definitions(getenv PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
+
 add_test(NAME getenv COMMAND getenv)
 
 # --- restrict keyword
