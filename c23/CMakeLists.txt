@@ -70,6 +70,16 @@ foreach(t IN LISTS c23features)
   endif()
 endforeach()
 
+if(MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
+# the CMAKE_C_SIMULATE_ID catches when frontend is GNU but MSVC runtime headers are used
+  target_compile_definitions(strdup PRIVATE _CRT_SECURE_NO_WARNINGS)
+  target_compile_options(strdup PRIVATE $<$<C_COMPILER_ID:Clang>:-Wno-deprecated-declarations>)
+endif()
+
+if(c23_nullptr)
+  target_compile_options(nullptr PRIVATE $<$<C_COMPILER_ID:Clang>:-Wno-unused-variable>)
+endif()
+
 if(c23_constexpr)
   target_link_libraries(constexpr PRIVATE $<$<BOOL:${UNIX}>:m>)
   set_property(TEST constexpr PROPERTY PASS_REGULAR_EXPRESSION "0.6969")
