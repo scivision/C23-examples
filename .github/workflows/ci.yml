@@ -9,6 +9,7 @@ on:
       - ".github/workflows/ci.yml"
       - "CMakePresets.json"
   workflow_dispatch:
+  pull_request:
 
 # avoid wasted runs
 concurrency:
@@ -119,7 +120,7 @@ jobs:
 
 
   windows-msvc:
-    runs-on: windows-2025-vs2026
+    runs-on: windows-latest
     timeout-minutes: 10
 
     strategy:
