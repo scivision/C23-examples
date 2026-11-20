@@ -13,6 +13,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 file(READ generic.c _src)
 check_source_compiles(C "${_src}" c11_generic)
 
+check_include_file("stdalign.h" c11_alignas)
 
 # --- C11 noreturn
 # deprecated by [[noreturn]] in C23
